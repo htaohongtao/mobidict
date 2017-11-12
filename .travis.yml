@@ -14,7 +14,7 @@ deploy:
   on:
     branch: master
 env:
-  matrix:
+  global:
   - secure: nIgNomx8xp96DQvHsAqFNSlOOBnh+9Xl0MGVckm9/YYuswrUTn6M+P9jw0z0Z10mX85nvT3XGedeZl7IPfK3vWe33QKV8gS4p7VqIhHfLfxiyw+Vps2BwYRB6fcbYz2U9RfXvUZffI+KYOUaDAZYnR8FbF4rvryHuxTgevOuP5Nlt51TAZDZcnHOFSR4ORjWH/BRy3yazlQmhoW55L2fV7TmTl6LmJKqWm3Qnf8D+NGa4bG6GncY+Q0889YEMZWCxUa55w40GX3F+Iosn/A7wKdRHArC87CPecQ7Q4Jz4IbPh8c73Ys9amtCUwSXBO1tYdoLZr00Lo3jZgoP53RC/8y8vaRrqhUJONrdbr9wZxxCVJSzNCCda9YD1GC8fZ34U7UReFfrpWU8VuGj2MNbbLYFNTGsruBh68A299CvSgpYk852MU96Q/0v6wxVbBzFgKpTpWd1GMrNAetDJ8p/ZIUvcZ+Yi8/pBr3yTsRuRP5mPLnM4/q4T7Skklrea+lfgWO436AstSm4XOfVtS+mMpBQzsWvSejv71H34CeyFXkGlftqXiDmuN/z+5GTutQGacFr4HndrjrmSfzTUsWojeGTw4Mdey5GmB3IcOHNC1nI3mOG/Qp2Iju20+oU4EzFPTeN6kLQz+jMTYzdxV+QW6lMkmz+k8NFdspajxHXAFo=
 before_install:
 - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
