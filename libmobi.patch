@@ -1,0 +1,87 @@
+diff --git a/src/index.h b/src/index.h
+index 89c1fb7..e5ea2d5 100644
+--- a/src/index.h
++++ b/src/index.h
+@@ -57,7 +57,7 @@
+ #define INDX_INFLSTRINGS_MAX 500 /**< Max number of inflected strings */
+ #define ORDT_RECORD_MAXCNT 256 /* max entries count in old ordt */
+ #define CNCX_RECORD_MAXCNT 0xf /* max entries count */
+-#define INDX_RECORD_MAXCNT 5000 /* max index entries per record */
++#define INDX_RECORD_MAXCNT 6000 /* max index entries per record */
+ #define INDX_TOTAL_MAXCNT ((size_t) INDX_RECORD_MAXCNT * 0xffff) /* max total index entries */
+ #define INDX_NAME_SIZEMAX 0xff
+ 
+diff --git a/src/mobi.h b/src/mobi.h
+index 78cf9e6..92d6c84 100644
+--- a/src/mobi.h
++++ b/src/mobi.h
+@@ -506,6 +506,8 @@ extern "C"
+     MOBI_EXPORT uint16_t mobi_get_textrecord_maxsize(const MOBIData *m);
+     MOBI_EXPORT size_t mobi_get_kf8offset(const MOBIData *m);
+     MOBI_EXPORT size_t mobi_get_kf8boundary_seqnumber(const MOBIData *m);
++    MOBI_EXPORT uint32_t mobi_get_orth_entry_start_offset(const MOBIIndexEntry* m);
++    MOBI_EXPORT uint32_t mobi_get_orth_entry_text_length(const MOBIIndexEntry* m);
+     MOBI_EXPORT size_t mobi_get_record_extrasize(const MOBIPdbRecord *record, const uint16_t flags);
+     MOBI_EXPORT size_t mobi_get_record_mb_extrasize(const MOBIPdbRecord *record, const uint16_t flags);
+     MOBI_EXPORT size_t mobi_get_fileversion(const MOBIData *m);
+@@ -530,6 +532,7 @@ extern "C"
+     MOBI_EXPORT bool mobi_exists_ncx(const MOBIData *m);
+     MOBI_EXPORT bool mobi_exists_orth(const MOBIData *m);
+     MOBI_EXPORT bool mobi_exists_infl(const MOBIData *m);
++    MOBI_EXPORT bool mobi_is_cp1252(const MOBIData *m);
+     MOBI_EXPORT bool mobi_is_hybrid(const MOBIData *m);
+     MOBI_EXPORT bool mobi_is_encrypted(const MOBIData *m);
+     MOBI_EXPORT bool mobi_is_mobipocket(const MOBIData *m);
+diff --git a/src/util.c b/src/util.c
+index 5dea9e1..6868dd4 100644
+--- a/src/util.c
++++ b/src/util.c
+@@ -2769,6 +2769,36 @@ uint32_t mobi_get_exthsize(const MOBIData *m) {
+     }
+ }
+ 
++/**
++ @brief Get entry start offset for the orth entry
++
++ @param[in] m MOBIIndexEntry structure
++ @return Start offset, zero on failure
++*/
++uint32_t mobi_get_orth_entry_start_offset(const MOBIIndexEntry* m) {
++    uint32_t entry_startpos;
++    MOBI_RET mobi_ret = mobi_get_indxentry_tagvalue(&entry_startpos, m,
++                                                    INDX_TAG_ORTH_STARTPOS);
++    if (mobi_ret != MOBI_SUCCESS)
++        return 0;
++
++    return entry_startpos;
++}
++
++/**
++ @brief Get text length for the orth entry
++
++ @param[in] MOBIIndexEntry structure
++ @return Text length
++*/
++uint32_t mobi_get_orth_entry_text_length(const MOBIIndexEntry* m) {
++    uint32_t entry_textlen;
++    mobi_get_indxentry_tagvalue(&entry_textlen, m,
++                                INDX_TAG_ORTH_ENDPOS);
++
++    return entry_textlen;
++}
++
+ /**
+  @brief Get count of palm database records
+  
+diff --git a/src/util.h b/src/util.h
+index d9ba0d3..668364f 100644
+--- a/src/util.h
++++ b/src/util.h
+@@ -138,7 +138,6 @@ int mobi_bitcount(const uint8_t byte);
+ MOBI_RET mobi_delete_record_by_seqnumber(MOBIData *m, const size_t num);
+ MOBI_RET mobi_swap_mobidata(MOBIData *m);
+ char * mobi_strdup(const char *s);
+-bool mobi_is_cp1252(const MOBIData *m);
+ MOBI_RET mobi_cp1252_to_utf8(char *output, const char *input, size_t *outsize, const size_t insize);
+ MOBI_RET mobi_utf8_to_cp1252(char *output, const char *input, size_t *outsize, const size_t insize);
+ uint8_t mobi_ligature_to_cp1252(const uint8_t c1, const uint8_t c2);

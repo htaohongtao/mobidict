@@ -1,0 +1,43 @@
+os:
+- osx
+osx_image: xcode9.1
+sudo: required
+dist: trusty
+language: c++
+compiler:
+- clang
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: "$GITHUB_TOKEN"
+  local_dir: dist
+  on:
+    branch: master
+env:
+  matrix:
+    secure: HlaKilT3ICmn3Fev0FJtzuN5BNC0EXj5cR2iGsrJNrsVSS9623akEgWiXcQJOqxFJVmSq1Awdb8peR3kZroopddnP5aLIpDA0j7UTGll6DiHBYP2Gg2SxxO8zzSojAFl+MDM+XwHOTYSlnecPgnKANz/94mxf0bmfMSwDcXC2yXoQ8IB4ZYPUTUFT2sTd6zH4YbvQAhmWUXSDDGLZ06bNfjBVQBCh69JPI59DIveytK53ym6uI+utrIYNRjnSpPsah7mSZWQ9+2tES2/uuuxDNmIWVjNNNVUIe1cihauN5wfwl+xrGXq/KuJXW7C/2PI+GcEox1OfCBYJchFG7PqCuv0C9nPbBtjAjyng5OERHQeNiDzFOu1Dna69aaw36omD2Xw3uZfpJAjdHWsrWFLOCUdPx4fqyxGMY9lpmI0WvjHq6y/osuIRfc/QC+L3t7CLFL/5keeA8LHCUU9ffk8uJBVMkwQkCBRJqX3qundB62bbHHjXan1eZZLo3AhFBn3lt3uDOEc+C6OZmYJaIJX4xe/cZ6Q/PGPl/JdZqR2Fr/M49Y8t+xq/Opwfzi2wxRWJqiYkucI8GYRR7LAplsci3T1xHpasTUc1R3FuZRZSuLUKITze+si5C5xlwFhp1V8F4fwWKlYjo+hWhYnTbyz15DHiThpmt6drHWq8HPbgt8=
+before_install:
+- if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+    sudo apt-get update -qq;
+    sudo apt-get install -y build-essential;
+    sudo apt-get install -y qtbase5-dev;
+    sudo apt-get install -y ninja-build;
+  elif [ "$TRAVIS_OS_NAME" == "osx" ]; then
+    brew update > /dev/null;
+    brew install ninja;
+    brew install qt5;
+    brew install tree;
+    export PATH=/usr/local/opt/qt/bin:$PATH;
+  fi
+script:
+- mkdir build
+- cd libmobi ; patch -p1 < ../libmobi.patch; cd ..
+- cd build
+- cmake -G Ninja ..
+- ninja || exit 1
+- if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+    /usr/local/opt/qt/bin/macdeployqt mobidict.app;
+    tree mobidict.app;
+    hdiutil create mobidict.dmg -volname "Mobidict" -fs HFS+ -srcfolder "mobidict.app";
+    mkdir dist; mv mobidict.dmg dist;
+  fi
