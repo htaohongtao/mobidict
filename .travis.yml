@@ -13,9 +13,6 @@ deploy:
   local_dir: dist
   on:
     branch: master
-env:
-  global:
-  - secure: fDLlIMTW1xZCDAlKALrSMbxGjBb9SVJkKJf1VT5I49YM928UilpiDMNzutkSjPKEqFmedAT+wp12YtM2bT0ZS6+JwIfsWzO6X6h7QuLHdQsxDtBs9Cq9Mryxz9XDHwHfftvWbfaHdGkG5wuoWEP02lVz+8Y6CZ724d2jWmo11q0y5+r5isQH6d+WtfZUZ+uV2c4Hiu5IlPRuWR7S8SOtWq9xpSgmuBpxVrItESPy8Ip8ajHmVkao7bzBW3YGhVMh9heFRmqeDmWUKJPDWE2f4oaTW5FzPHf8fl9RaPqtQw2XTDNgry3hrMgGzei73/yng2khn9wzbTlDqCz7IisAXZJFDsaRqKfa5R9MiDb1t8lmg/i0OzFLsEKdzG5SHOhHcZlQPK0UNjkrryqsF1RvUre5NyMzOp7lieb5iPYw+r9AAcgLoSxLEdHvihjr9MJYgqen333YivMuxGe4BnMRElB6JmOTgmrZzKQlkV+fWiIZ3SI7NlWPuPbZsfZL3fulic66UwmrmTa9c+Xxs/KlZOEzqZJnDqO2s3htWJeSHq0SNPp+UCLGHWDwmHs4nr3bEF7IOlz/77WbvLG3ElRf/rWhjBYhElERm4MQ/pZ0N9mDK27eg4KnaZLxHynjPWaMIW7GtgyNe8kIwPFYM45RO7u0V5RZa3jqMYoZB7+/bL8=
 before_install:
 - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
     sudo apt-get update -qq;
