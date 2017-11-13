@@ -25,16 +25,13 @@ MobiDict::~MobiDict()
 
 QString MobiDict::entryForLink(const QString &link)
 {
-  uint32_t offset   = link.toUInt();
-  uint32_t bestDiff = DIFF_THRESHOLD;
-  QString match     = QString::null;
+  uint32_t offset = link.toUInt();
+  QString match   = QString::null;
 
   for (const auto &entry : m_wordMap.keys()) {
-    uint32_t diff = qAbs(m_wordMap[entry]->startPos - offset);
-    if (diff < DIFF_THRESHOLD && diff < bestDiff) {
-      match    = entry;
-      bestDiff = diff;
-      qWarning() << entry << "is a match?" << diff;
+    if (m_wordMap[entry]->startPos == offset) {
+      match = entry;
+      break;
     }
   }
 
@@ -146,11 +143,6 @@ MOBI_RET MobiDict::open()
       ++i;
       continue;
     }
-
-    // Even though entry_textlen is a uint32_t, we use memcpy hence limited by
-    // size_t which cannot be larger than 0xFFFF per ISO/IEC 9899-2011 7.20.3
-    if (entry_textlen > 0xFFFF)
-      return MOBI_DATA_CORRUPT;
 
     MobiEntry *mobiEntry  = new MobiEntry;
     mobiEntry->startPos   = entry_startpos;
