@@ -19,6 +19,9 @@ MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
   m_completer    = new Completer;
   m_currentDict  = nullptr;
   m_deviceSerial = QString::null;
+  m_settings     = new QSettings;
+
+  m_settings->setDefaultFormat(QSettings::IniFormat);
 
   m_ui->searchLine->installEventFilter(this);
 
@@ -58,6 +61,9 @@ MainWindow::~MainWindow()
 
   delete m_completer;
   m_completer = nullptr;
+
+  delete m_settings;
+  m_settings = nullptr;
 }
 
 bool MainWindow::eventFilter(QObject* obj, QEvent* event)
@@ -75,28 +81,29 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* event)
 
 void MainWindow::closeEvent(QCloseEvent* ev)
 {
-  m_settings.setValue("mainwindow/geometry", geometry());
-  m_settings.setValue("mainwindow/splitterSizes", m_ui->splitter->saveState());
-  m_settings.setValue("viewer/lastDictionary",
-                      m_ui->dictComboBox->currentText());
+  m_settings->setValue("mainwindow/geometry", geometry());
+  m_settings->setValue("mainwindow/splitterSizes", m_ui->splitter->saveState());
+  m_settings->setValue("viewer/lastDictionary",
+                       m_ui->dictComboBox->currentText());
 
   QMainWindow::closeEvent(ev);
 }
 
 void MainWindow::showEvent(QShowEvent* ev)
 {
-  QRect rect = m_settings.value("mainwindow/geometry", QRect()).toRect();
+  QRect rect = m_settings->value("mainwindow/geometry", QRect()).toRect();
   QByteArray splitterSizes =
-      m_settings.value("mainwindow/splitterSizes", QByteArray()).toByteArray();
+      m_settings->value("mainwindow/splitterSizes", QByteArray()).toByteArray();
 
   QString lastDictionary =
-      m_settings.value("viewer/lastDictionary", QString()).toString();
+      m_settings->value("viewer/lastDictionary", QString()).toString();
 
-  QString fontName = m_settings.value("viewer/fontName", "Consolas").toString();
-  int fontSize     = m_settings.value("viewer/fontSize", 18).toInt();
+  QString fontName =
+      m_settings->value("viewer/fontName", "Consolas").toString();
+  int fontSize = m_settings->value("viewer/fontSize", 18).toInt();
 
   QString deviceSerial =
-      m_settings.value("viewer/deviceSerial", QString()).toString();
+      m_settings->value("viewer/deviceSerial", QString()).toString();
 
   if (!deviceSerial.isEmpty() && (deviceSerial.length() == 16)) {
     // qWarning() << "Device serial number:" << deviceSerial;

@@ -40,7 +40,7 @@ class MainWindow : public QMainWindow {
   QFutureWatcher<MOBI_RET> m_watcher;
   QFuture<MOBI_RET> m_future;
 
-  QSettings m_settings;
+  QSettings* m_settings;
 
   void createResources(const QString&);
   void selfTest();
