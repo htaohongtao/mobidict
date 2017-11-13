@@ -8,6 +8,7 @@ HtmlBrowser::HtmlBrowser(QWidget* parent) : QTextBrowser(parent)
 
 HtmlBrowser::~HtmlBrowser()
 {
+  qDeleteAll(m_resourceMap);
 }
 
 void HtmlBrowser::setText(const QString& text)
