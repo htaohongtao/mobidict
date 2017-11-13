@@ -48,7 +48,6 @@ MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
                 SLOT(setFocus()));
 
 #ifdef Q_OS_OSX
-  m_ui->searchLine->setAttribute(Qt::WA_MacShowFocusRect, 0);
   m_ui->matchesWidget->setAttribute(Qt::WA_MacShowFocusRect, 0);
 #endif
 }

@@ -32,7 +32,7 @@
       <property name="childrenCollapsible">
        <bool>false</bool>
       </property>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QComboBox" name="dictComboBox">
@@ -51,14 +51,14 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>10</pointsize>
+            <pointsize>12</pointsize>
            </font>
           </property>
           <property name="frame">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="placeholderText">
-           <string>Enter search term...</string>
+           <string>Type a word to look up</string>
           </property>
           <property name="clearButtonEnabled">
            <bool>true</bool>
