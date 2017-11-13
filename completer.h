@@ -5,9 +5,11 @@
 
 class Completer : public QObject {
  public:
+  Completer();
   Completer(const QList<QString>&);
   ~Completer();
 
+  void setWordList(const QList<QString>&);
   void setCompletionPrefix(const QString&);
   const QList<QString>& matches();
 

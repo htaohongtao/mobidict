@@ -19,7 +19,7 @@ MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
   m_ui->resultBrowser->document()->setDefaultStyleSheet(
       "* {font-size: 18px; font-family: \"Monospace\" }");
 
-  m_completer   = nullptr;
+  m_completer   = new Completer;
   m_currentDict = nullptr;
 
   m_ui->searchLine->installEventFilter(this);
@@ -113,11 +113,6 @@ void MainWindow::dictionaryLoaded()
 {
   MOBI_RET result = m_future.result();
 
-  if (m_completer) {
-    delete m_completer;
-    m_completer = nullptr;
-  }
-
   if (result != MOBI_SUCCESS) {
     QMessageBox::critical(
         this, "Error opening dictionary",
@@ -128,7 +123,7 @@ void MainWindow::dictionaryLoaded()
     m_currentDict = nullptr;
   }
   else {
-    m_completer = new Completer(m_currentDict->words());
+    m_completer->setWordList(m_currentDict->words());
 
     setWindowTitle(m_currentDict->title());
     m_ui->searchLine->setEnabled(true);

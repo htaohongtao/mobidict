@@ -1,13 +1,23 @@
 #include "completer.h"
 
-Completer::Completer(const QList<QString>& words)
+Completer::Completer()
+{
+  m_matches = QList<QString>();
+}
+
+Completer::Completer(const QList<QString>& words) : Completer()
 {
   m_wordList = words;
-  m_matches  = QList<QString>();
 }
 
 Completer::~Completer()
 {
+}
+
+void Completer::setWordList(const QList<QString>& wordList)
+{
+  m_wordList.clear();
+  m_wordList = wordList;
 }
 
 void Completer::setCompletionPrefix(const QString& prefix)
