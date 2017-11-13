@@ -18,7 +18,7 @@ MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
   m_ui->splitter->setStretchFactor(1, 8);
 
   m_ui->resultBrowser->document()->setDefaultStyleSheet(
-      "* {font-size: 20px; font-family: \"Monospace\" }");
+      "* {font-size: 18px; font-family: \"Monospace\" }");
 
   m_completer   = nullptr;
   m_currentDict = nullptr;
