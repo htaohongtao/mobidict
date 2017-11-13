@@ -12,10 +12,18 @@ index 89c1fb7..e5ea2d5 100644
  #define INDX_NAME_SIZEMAX 0xff
  
 diff --git a/src/mobi.h b/src/mobi.h
-index 78cf9e6..92d6c84 100644
+index 78cf9e6..af7c8d9 100644
 --- a/src/mobi.h
 +++ b/src/mobi.h
-@@ -506,6 +506,8 @@ extern "C"
+@@ -472,6 +472,7 @@ extern "C"
+      @defgroup mobi_export Functions exported by the library
+      @{
+      */
++    MOBI_EXPORT const char * libmobi_msg(const MOBI_RET ret);
+     MOBI_EXPORT const char * mobi_version(void);
+     MOBI_EXPORT MOBI_RET mobi_load_file(MOBIData *m, FILE *file);
+     MOBI_EXPORT MOBI_RET mobi_load_filename(MOBIData *m, const char *path);
+@@ -506,6 +507,8 @@ extern "C"
      MOBI_EXPORT uint16_t mobi_get_textrecord_maxsize(const MOBIData *m);
      MOBI_EXPORT size_t mobi_get_kf8offset(const MOBIData *m);
      MOBI_EXPORT size_t mobi_get_kf8boundary_seqnumber(const MOBIData *m);
@@ -24,7 +32,7 @@ index 78cf9e6..92d6c84 100644
      MOBI_EXPORT size_t mobi_get_record_extrasize(const MOBIPdbRecord *record, const uint16_t flags);
      MOBI_EXPORT size_t mobi_get_record_mb_extrasize(const MOBIPdbRecord *record, const uint16_t flags);
      MOBI_EXPORT size_t mobi_get_fileversion(const MOBIData *m);
-@@ -530,6 +532,7 @@ extern "C"
+@@ -530,6 +533,7 @@ extern "C"
      MOBI_EXPORT bool mobi_exists_ncx(const MOBIData *m);
      MOBI_EXPORT bool mobi_exists_orth(const MOBIData *m);
      MOBI_EXPORT bool mobi_exists_infl(const MOBIData *m);
@@ -85,3 +93,15 @@ index d9ba0d3..668364f 100644
  MOBI_RET mobi_cp1252_to_utf8(char *output, const char *input, size_t *outsize, const size_t insize);
  MOBI_RET mobi_utf8_to_cp1252(char *output, const char *input, size_t *outsize, const size_t insize);
  uint8_t mobi_ligature_to_cp1252(const uint8_t c1, const uint8_t c2);
+diff --git a/tools/common.h b/tools/common.h
+index 6022d22..9d0701a 100644
+--- a/tools/common.h
++++ b/tools/common.h
+@@ -48,7 +48,6 @@
+ #define FULLNAME_MAX 1024
+ 
+ extern const char separator;
+-const char * libmobi_msg(const MOBI_RET ret);
+ int mt_mkdir(const char *filename);
+ void split_fullpath(const char *fullpath, char *dirname, char *basename);
+ bool dir_exists(const char *path);

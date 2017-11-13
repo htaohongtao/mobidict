@@ -120,7 +120,7 @@ void MainWindow::dictionaryLoaded()
   if (result != MOBI_SUCCESS) {
     QMessageBox::critical(
         this, "Error opening dictionary",
-        QString("Error code %1: %2").arg(result).arg(error_messages[result]));
+        QString("Error code %1: %2").arg(result).arg(libmobi_msg(result)));
 
     setWindowTitle("Mobidict");
     delete m_currentDict;

@@ -8,23 +8,6 @@
 #include "mobidict.h"
 #include "ui_mainwindow.h"
 
-static const char* error_messages[] = {
-    "Success",
-    "Generic error",
-    "Wrong function parameter",
-    "Corrupted data",
-    "File not found",
-    "Document is encrypted",
-    "Unsupported document format",
-    "Memory allocation error",
-    "Initialization error",
-    "Buffer error",
-    "XML error",
-    "Invalid DRM pid",
-    "DRM key not found",
-    "DRM support not included",
-};
-
 class MainWindow : public QMainWindow {
   Q_OBJECT
 
