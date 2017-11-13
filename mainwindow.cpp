@@ -25,26 +25,21 @@ MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
 
   m_ui->searchLine->installEventFilter(this);
 
-  connect(m_ui->searchLine, &QLineEdit::returnPressed, this,
-          &MainWindow::searchWord);
-  connect(m_ui->searchLine, &QLineEdit::textChanged, this,
-          &MainWindow::loadMatches);
+  connect(m_ui->searchLine, &QLineEdit::returnPressed, this, &MainWindow::searchWord);
+  connect(m_ui->searchLine, &QLineEdit::textChanged, this, &MainWindow::loadMatches);
   connect(m_ui->matchesWidget, &QListWidget::itemActivated, this,
           &MainWindow::searchItem);
-  connect(m_ui->matchesWidget, &QListWidget::itemClicked, this,
-          &MainWindow::searchItem);
+  connect(m_ui->matchesWidget, &QListWidget::itemClicked, this, &MainWindow::searchItem);
   connect(m_ui->matchesWidget, &QListWidget::currentItemChanged, this,
           &MainWindow::searchItem);
-  connect(m_ui->resultBrowser, &QTextBrowser::anchorClicked, this,
-          &MainWindow::openLink);
+  connect(m_ui->resultBrowser, &QTextBrowser::anchorClicked, this, &MainWindow::openLink);
   connect(m_ui->dictComboBox,
-          static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::activated),
-          this, &MainWindow::loadDictionary);
+          static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::activated), this,
+          &MainWindow::loadDictionary);
   connect(&m_watcher, &QFutureWatcher<bool>::finished, this,
           &MainWindow::dictionaryLoaded);
 
-  new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_L), m_ui->searchLine,
-                SLOT(setFocus()));
+  new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_L), m_ui->searchLine, SLOT(setFocus()));
 
 #ifdef Q_OS_OSX
   m_ui->matchesWidget->setAttribute(Qt::WA_MacShowFocusRect, 0);
@@ -83,8 +78,7 @@ void MainWindow::closeEvent(QCloseEvent* ev)
 {
   m_settings->setValue("mainwindow/geometry", geometry());
   m_settings->setValue("mainwindow/splitterSizes", m_ui->splitter->saveState());
-  m_settings->setValue("viewer/lastDictionary",
-                       m_ui->dictComboBox->currentText());
+  m_settings->setValue("viewer/lastDictionary", m_ui->dictComboBox->currentText());
 
   QMainWindow::closeEvent(ev);
 }
@@ -98,12 +92,10 @@ void MainWindow::showEvent(QShowEvent* ev)
   QString lastDictionary =
       m_settings->value("viewer/lastDictionary", QString()).toString();
 
-  QString fontName =
-      m_settings->value("viewer/fontName", "Consolas").toString();
-  int fontSize = m_settings->value("viewer/fontSize", 18).toInt();
+  QString fontName = m_settings->value("viewer/fontName", "Consolas").toString();
+  int fontSize     = m_settings->value("viewer/fontSize", 18).toInt();
 
-  QString deviceSerial =
-      m_settings->value("viewer/deviceSerial", QString()).toString();
+  QString deviceSerial = m_settings->value("viewer/deviceSerial", QString()).toString();
 
   if (!deviceSerial.isEmpty() && (deviceSerial.length() == 16)) {
     // qWarning() << "Device serial number:" << deviceSerial;
@@ -111,9 +103,7 @@ void MainWindow::showEvent(QShowEvent* ev)
   }
 
   m_ui->resultBrowser->document()->setDefaultStyleSheet(
-      QString("* {font-size: %1px; font-family:%2 }")
-          .arg(fontSize)
-          .arg(fontName));
+      QString("* {font-size: %1px; font-family:%2 }").arg(fontSize).arg(fontName));
 
   if (!rect.isEmpty())
     setGeometry(rect);
@@ -173,11 +163,10 @@ bool MainWindow::discoverDictionaries()
       dir.entryList(formats, QDir::Files | QDir::Readable, QDir::Name);
 
   if (dictionaries.isEmpty()) {
-    QMessageBox::critical(
-        nullptr, "No dictionary found",
-        QString("Please put your dictionaries (in mobi format) under "
-                "<b>%1/Dictionaries</b> and retry.")
-            .arg(QDir::homePath()));
+    QMessageBox::critical(nullptr, "No dictionary found",
+                          QString("Please put your dictionaries (in mobi format) under "
+                                  "<b>%1/Dictionaries</b> and retry.")
+                              .arg(QDir::homePath()));
     return false;
   }
 
@@ -193,8 +182,7 @@ void MainWindow::loadDictionary(const QString& text)
     delete m_currentDict;
 
   m_currentDict = new MobiDict(
-      QString("%1/Dictionaries/%2").arg(QDir::homePath()).arg(text),
-      m_deviceSerial);
+      QString("%1/Dictionaries/%2").arg(QDir::homePath()).arg(text), m_deviceSerial);
   m_future = QtConcurrent::run(m_currentDict, &MobiDict::open);
   m_watcher.setFuture(m_future);
 
@@ -261,9 +249,9 @@ void MainWindow::createResources(const QString& html)
         case MOBIFiletype::T_GIF:
         case MOBIFiletype::T_PNG:
         case MOBIFiletype::T_BMP: {
-          QImage* img  = new QImage;
-          bool success = img->loadFromData(
-              QByteArray((const char*)flow->data, flow->size));
+          QImage* img = new QImage;
+          bool success =
+              img->loadFromData(QByteArray((const char*)flow->data, flow->size));
           if (!success) {
             qWarning() << "Failed to load image for" << match;
             delete img;

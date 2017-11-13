@@ -125,10 +125,9 @@ MOBI_RET MobiDict::open()
   if (m_rawMarkup == nullptr)
     return MOBI_MALLOC_FAILED;
 
-  mobi_ret =
-      mobi_parse_rawml_opt(m_rawMarkup, m_mobiData, false, /* parse toc */
-                           true,                           /* parse dic */
-                           false /* reconstruct */);
+  mobi_ret = mobi_parse_rawml_opt(m_rawMarkup, m_mobiData, false, /* parse toc */
+                                  true,                           /* parse dic */
+                                  false /* reconstruct */);
 
   if (mobi_ret != MOBI_SUCCESS)
     return mobi_ret;
@@ -140,8 +139,8 @@ MOBI_RET MobiDict::open()
 
   for (size_t i = 0; i < count; ++i) {
     const MOBIIndexEntry *orth_entry = &m_rawMarkup->orth->entries[i];
-    entry_startpos = mobi_get_orth_entry_start_offset(orth_entry);
-    entry_textlen  = mobi_get_orth_entry_text_length(orth_entry);
+    entry_startpos                   = mobi_get_orth_entry_start_offset(orth_entry);
+    entry_textlen                    = mobi_get_orth_entry_text_length(orth_entry);
 
     if (entry_startpos == 0 || entry_textlen == 0) {
       ++i;
