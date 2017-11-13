@@ -129,9 +129,7 @@ void MainWindow::dictionaryLoaded()
     m_currentDict = nullptr;
   }
   else {
-    m_completer = new QCompleter(m_currentDict->words(), this);
-    m_completer->setCaseSensitivity(Qt::CaseInsensitive);
-    m_completer->setModelSorting(QCompleter::UnsortedModel);
+    m_completer = new Completer(m_currentDict->words());
 
     setWindowTitle(m_currentDict->title());
     m_ui->searchLine->setEnabled(true);
@@ -217,9 +215,7 @@ void MainWindow::loadMatches(const QString& word)
 
   m_completer->setCompletionPrefix(word);
   m_ui->matchesWidget->clear();
-
-  for (int i = 0; m_completer->setCurrentRow(i); i++)
-    m_ui->matchesWidget->addItem(m_completer->currentCompletion());
+  m_ui->matchesWidget->addItems(m_completer->matches());
 }
 
 void MainWindow::createResources(const QString& html)

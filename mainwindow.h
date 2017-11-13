@@ -4,6 +4,7 @@
 #include <QFutureWatcher>
 #include <QSettings>
 
+#include "completer.h"
 #include "mobidict.h"
 #include "ui_mainwindow.h"
 
@@ -50,7 +51,7 @@ class MainWindow : public QMainWindow {
   Ui::MainWindow* m_ui;
 
   MobiDict* m_currentDict;
-  QCompleter* m_completer;
+  Completer* m_completer;
 
   QFutureWatcher<MOBI_RET> m_watcher;
   QFuture<MOBI_RET> m_future;

@@ -12,8 +12,8 @@ find_package(Qt5 COMPONENTS Concurrent Widgets Test REQUIRED)
 
 qt5_wrap_ui(UI_HEADERS mainwindow.ui)
 
-set(SOURCES htmlbrowser.cpp main.cpp mainwindow.cpp mobidict.cpp
-            libmobi/src/buffer.c libmobi/src/compression.c
+set(SOURCES completer.cpp htmlbrowser.cpp main.cpp mainwindow.cpp
+            mobidict.cpp libmobi/src/buffer.c libmobi/src/compression.c
             libmobi/src/index.c libmobi/src/memory.c
             libmobi/src/meta.c libmobi/src/parse_rawml.c
             libmobi/src/read.c libmobi/src/structure.c
