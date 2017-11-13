@@ -96,7 +96,6 @@ MOBI_RET MobiDict::open()
   if (file == nullptr)
     return MOBI_ERROR;
 
-
   MOBI_RET mobi_ret = mobi_load_file(m_mobiData, file);
   fclose(file);
 
@@ -137,6 +136,11 @@ MOBI_RET MobiDict::open()
       ++i;
       continue;
     }
+
+    // Even though entry_textlen is a uin32_t, we use memcpy hence limited by
+    // size_t which cannot be larger than 0xFFFF per ISO/IEC 9899-2011 7.20.3
+    if (entry_textlen > 0xFFFF)
+      return MOBI_DATA_CORRUPT;
 
     MobiEntry *mobiEntry  = new MobiEntry;
     mobiEntry->startPos   = entry_startpos;
