@@ -3,8 +3,6 @@
 
 #include "mobidict.h"
 
-#define DIFF_THRESHOLD 2000
-
 MobiDict::MobiDict(const QString &path, const QString &serial) : QObject()
 {
   m_mobiData     = nullptr;
