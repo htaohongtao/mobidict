@@ -19,9 +19,8 @@ MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
   m_completer    = new Completer;
   m_currentDict  = nullptr;
   m_deviceSerial = QString::null;
-  m_settings     = new QSettings;
-
-  m_settings->setDefaultFormat(QSettings::IniFormat);
+  m_settings     = new QSettings(QSettings::IniFormat, QSettings::UserScope,
+                             qApp->organizationName(), qApp->applicationName());
 
   m_ui->searchLine->installEventFilter(this);
 
