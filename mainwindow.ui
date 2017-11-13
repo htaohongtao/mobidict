@@ -6,15 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>807</width>
-    <height>645</height>
+    <width>708</width>
+    <height>560</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>807</width>
-    <height>645</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>Mobidict</string>
