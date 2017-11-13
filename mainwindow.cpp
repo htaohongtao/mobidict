@@ -16,9 +16,6 @@ MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
   m_ui->splitter->setStretchFactor(0, 2);
   m_ui->splitter->setStretchFactor(1, 8);
 
-  m_ui->resultBrowser->document()->setDefaultStyleSheet(
-      "* {font-size: 18px; font-family: \"Monospace\" }");
-
   m_completer   = new Completer;
   m_currentDict = nullptr;
 
@@ -36,10 +33,9 @@ MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
           &MainWindow::searchItem);
   connect(m_ui->resultBrowser, &QTextBrowser::anchorClicked, this,
           &MainWindow::openLink);
-  connect(
-      m_ui->dictComboBox,
-      static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::activated),
-      this, &MainWindow::loadDictionary);
+  connect(m_ui->dictComboBox,
+          static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::activated),
+          this, &MainWindow::loadDictionary);
   connect(&m_watcher, &QFutureWatcher<bool>::finished, this,
           &MainWindow::dictionaryLoaded);
 
@@ -94,6 +90,14 @@ void MainWindow::showEvent(QShowEvent* ev)
 
   QString lastDictionary =
       m_settings.value("viewer/lastDictionary", QString()).toString();
+
+  QString fontName = m_settings.value("viewer/fontName", "Consolas").toString();
+  int fontSize     = m_settings.value("viewer/fontSize", 18).toInt();
+
+  m_ui->resultBrowser->document()->setDefaultStyleSheet(
+      QString("* {font-size: %1px; font-family:%2 }")
+          .arg(fontSize)
+          .arg(fontName));
 
   if (!rect.isEmpty())
     setGeometry(rect);
