@@ -75,6 +75,10 @@ QString MobiDict::entryForWord(const QString &word)
 
 MOBI_RET MobiDict::open()
 {
+  m_mobiData = mobi_init();
+  if (m_mobiData == nullptr)
+    return MOBI_MALLOC_FAILED;
+
 #ifdef Q_OS_WIN
   wchar_t *w_path = new wchar_t[m_path.length() + 1];
   int len         = m_path.toWCharArray(w_path);
@@ -92,9 +96,6 @@ MOBI_RET MobiDict::open()
   if (file == nullptr)
     return MOBI_ERROR;
 
-  m_mobiData = mobi_init();
-  if (m_mobiData == nullptr)
-    return MOBI_MALLOC_FAILED;
 
   MOBI_RET mobi_ret = mobi_load_file(m_mobiData, file);
   fclose(file);

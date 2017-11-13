@@ -149,8 +149,12 @@ void MainWindow::dictionaryLoaded()
 bool MainWindow::discoverDictionaries()
 {
   QDir dir(QString("%1/Dictionaries").arg(QDir::homePath()));
-  QStringList dictionaries = dir.entryList(
-      QStringList("*.mobi"), QDir::Files | QDir::Readable, QDir::Name);
+  QStringList formats;
+  formats << "*.azw"
+          << "*.mobi";
+
+  QStringList dictionaries =
+      dir.entryList(formats, QDir::Files | QDir::Readable, QDir::Name);
 
   if (dictionaries.isEmpty()) {
     QMessageBox::critical(
@@ -162,7 +166,7 @@ bool MainWindow::discoverDictionaries()
   }
 
   for (auto dict : dictionaries)
-    m_ui->dictComboBox->addItem(QFileInfo(dir, dict).baseName());
+    m_ui->dictComboBox->addItem(dict);
 
   return true;
 }
@@ -173,7 +177,7 @@ void MainWindow::loadDictionary(const QString& text)
     delete m_currentDict;
 
   m_currentDict = new MobiDict(
-      QString("%1/Dictionaries/%2.mobi").arg(QDir::homePath()).arg(text));
+      QString("%1/Dictionaries/%2").arg(QDir::homePath()).arg(text));
   m_future = QtConcurrent::run(m_currentDict, &MobiDict::open);
   m_watcher.setFuture(m_future);
 

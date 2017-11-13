@@ -14,10 +14,12 @@ qt5_wrap_ui(UI_HEADERS mainwindow.ui)
 
 set(SOURCES completer.cpp htmlbrowser.cpp main.cpp mainwindow.cpp
             mobidict.cpp libmobi/src/buffer.c libmobi/src/compression.c
-            libmobi/src/index.c libmobi/src/memory.c
-            libmobi/src/meta.c libmobi/src/parse_rawml.c
+            libmobi/src/encryption.c libmobi/src/index.c libmobi/src/memory.c
+            libmobi/src/meta.c libmobi/src/parse_rawml.c libmobi/src/sha1.c
             libmobi/src/read.c libmobi/src/structure.c
             libmobi/src/util.c)
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DUSE_ENCRYPTION")
 
 if (APPLE)
     set(OS_BUNDLE MACOSX_BUNDLE)
