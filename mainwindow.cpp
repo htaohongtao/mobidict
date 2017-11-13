@@ -1,5 +1,4 @@
 #include <QtConcurrent/qtconcurrentrun.h>
-#include <QCompleter>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QRegularExpression>
