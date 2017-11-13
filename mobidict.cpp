@@ -133,7 +133,7 @@ MOBI_RET MobiDict::open()
     entry_startpos = mobi_get_orth_entry_start_offset(orth_entry);
     entry_textlen  = mobi_get_orth_entry_text_length(orth_entry);
 
-    if (entry_startpos == 0) {
+    if (entry_startpos == 0 || entry_textlen == 0) {
       ++i;
       continue;
     }
@@ -156,6 +156,9 @@ MOBI_RET MobiDict::open()
 
     // qDebug("Adding %s", orth_entry->label);
   }
+
+  if (m_wordMap.isEmpty())
+    return MOBI_DATA_CORRUPT;
 
   qDebug("Dictionary loaded.");
 

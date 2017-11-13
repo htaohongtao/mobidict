@@ -41,10 +41,10 @@ index 78cf9e6..af7c8d9 100644
      MOBI_EXPORT bool mobi_is_encrypted(const MOBIData *m);
      MOBI_EXPORT bool mobi_is_mobipocket(const MOBIData *m);
 diff --git a/src/util.c b/src/util.c
-index 5dea9e1..6868dd4 100644
+index 5dea9e1..4d00da2 100644
 --- a/src/util.c
 +++ b/src/util.c
-@@ -2769,6 +2769,36 @@ uint32_t mobi_get_exthsize(const MOBIData *m) {
+@@ -2769,6 +2769,39 @@ uint32_t mobi_get_exthsize(const MOBIData *m) {
      }
  }
  
@@ -56,9 +56,9 @@ index 5dea9e1..6868dd4 100644
 +*/
 +uint32_t mobi_get_orth_entry_start_offset(const MOBIIndexEntry* m) {
 +    uint32_t entry_startpos;
-+    MOBI_RET mobi_ret = mobi_get_indxentry_tagvalue(&entry_startpos, m,
-+                                                    INDX_TAG_ORTH_STARTPOS);
-+    if (mobi_ret != MOBI_SUCCESS)
++    MOBI_RET ret = mobi_get_indxentry_tagvalue(&entry_startpos, m,
++                                               INDX_TAG_ORTH_STARTPOS);
++    if (ret != MOBI_SUCCESS)
 +        return 0;
 +
 +    return entry_startpos;
@@ -72,8 +72,11 @@ index 5dea9e1..6868dd4 100644
 +*/
 +uint32_t mobi_get_orth_entry_text_length(const MOBIIndexEntry* m) {
 +    uint32_t entry_textlen;
-+    mobi_get_indxentry_tagvalue(&entry_textlen, m,
-+                                INDX_TAG_ORTH_ENDPOS);
++    MOBI_RET ret = mobi_get_indxentry_tagvalue(&entry_textlen, m,
++                                               INDX_TAG_ORTH_ENDPOS);
++
++    if (ret != MOBI_SUCCESS)
++        return 0;
 +
 +    return entry_textlen;
 +}
