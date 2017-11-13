@@ -35,6 +35,7 @@ class MainWindow : public QMainWindow {
 
   MobiDict* m_currentDict;
   Completer* m_completer;
+  QString m_deviceSerial;
 
   QFutureWatcher<MOBI_RET> m_watcher;
   QFuture<MOBI_RET> m_future;

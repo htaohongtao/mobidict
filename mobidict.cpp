@@ -5,13 +5,14 @@
 
 #define DIFF_THRESHOLD 2000
 
-MobiDict::MobiDict(const QString &path) : QObject()
+MobiDict::MobiDict(const QString &path, const QString &serial) : QObject()
 {
-  m_mobiData  = nullptr;
-  m_rawMarkup = nullptr;
-  m_path      = path;
-  m_title     = QString::null;
-  m_codec     = nullptr;
+  m_mobiData     = nullptr;
+  m_rawMarkup    = nullptr;
+  m_path         = path;
+  m_title        = QString::null;
+  m_codec        = nullptr;
+  m_deviceSerial = serial;
 }
 
 MobiDict::~MobiDict()
@@ -98,6 +99,16 @@ MOBI_RET MobiDict::open()
 
   MOBI_RET mobi_ret = mobi_load_file(m_mobiData, file);
   fclose(file);
+
+  if (mobi_is_encrypted(m_mobiData)) {
+    if (!m_deviceSerial.isEmpty()) {
+      qWarning().noquote() << "Using device serial" << m_deviceSerial;
+      mobi_drm_setkey_serial(m_mobiData, m_deviceSerial.toLatin1());
+    }
+    else {
+      return MOBI_FILE_ENCRYPTED;
+    }
+  }
 
   if (mobi_ret != MOBI_SUCCESS)
     return mobi_ret;

@@ -16,8 +16,9 @@ MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
   m_ui->splitter->setStretchFactor(0, 2);
   m_ui->splitter->setStretchFactor(1, 8);
 
-  m_completer   = new Completer;
-  m_currentDict = nullptr;
+  m_completer    = new Completer;
+  m_currentDict  = nullptr;
+  m_deviceSerial = QString::null;
 
   m_ui->searchLine->installEventFilter(this);
 
@@ -93,6 +94,14 @@ void MainWindow::showEvent(QShowEvent* ev)
 
   QString fontName = m_settings.value("viewer/fontName", "Consolas").toString();
   int fontSize     = m_settings.value("viewer/fontSize", 18).toInt();
+
+  QString deviceSerial =
+      m_settings.value("viewer/deviceSerial", QString()).toString();
+
+  if (!deviceSerial.isEmpty() && (deviceSerial.length() == 16)) {
+    // qWarning() << "Device serial number:" << deviceSerial;
+    m_deviceSerial = deviceSerial;
+  }
 
   m_ui->resultBrowser->document()->setDefaultStyleSheet(
       QString("* {font-size: %1px; font-family:%2 }")
@@ -177,7 +186,8 @@ void MainWindow::loadDictionary(const QString& text)
     delete m_currentDict;
 
   m_currentDict = new MobiDict(
-      QString("%1/Dictionaries/%2").arg(QDir::homePath()).arg(text));
+      QString("%1/Dictionaries/%2").arg(QDir::homePath()).arg(text),
+      m_deviceSerial);
   m_future = QtConcurrent::run(m_currentDict, &MobiDict::open);
   m_watcher.setFuture(m_future);
 

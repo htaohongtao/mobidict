@@ -15,7 +15,7 @@ typedef struct {
 
 class MobiDict : public QObject {
  public:
-  MobiDict(const QString&);
+  MobiDict(const QString&, const QString&);
   ~MobiDict();
 
   MOBI_RET open();
@@ -31,8 +31,10 @@ class MobiDict : public QObject {
   MOBIData* m_mobiData;
   MOBIRawml* m_rawMarkup;
 
+  QString m_deviceSerial;
   QString m_path;
   QString m_title;
+
   bool m_isCP1252;
 
   QMap<QString, MobiEntry*> m_wordMap;
