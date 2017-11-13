@@ -137,7 +137,7 @@ MOBI_RET MobiDict::open()
       continue;
     }
 
-    // Even though entry_textlen is a uin32_t, we use memcpy hence limited by
+    // Even though entry_textlen is a uint32_t, we use memcpy hence limited by
     // size_t which cannot be larger than 0xFFFF per ISO/IEC 9899-2011 7.20.3
     if (entry_textlen > 0xFFFF)
       return MOBI_DATA_CORRUPT;
