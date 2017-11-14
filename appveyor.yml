@@ -35,6 +35,8 @@ build_script:
 
     cd build
 
+    set PATH=C:\Qt\5.9.1\msvc2017_64\bin;%PATH%
+
     cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
 
     ninja
