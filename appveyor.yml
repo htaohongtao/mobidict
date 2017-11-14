@@ -26,7 +26,7 @@ install:
     - cmake --version
 
 before_build:
-	- - call "C:\Program Files (x86)\Microsoft Visual Studio 15.0\VC\vcvarsall.bat" amd64
+	- call "C:\Program Files (x86)\Microsoft Visual Studio 15.0\VC\vcvarsall.bat" amd64
 
 build_script:
 	- mkdir build
