@@ -47,15 +47,13 @@ build_script:
 
     cd libmobi
 
-    patch -p1 < C:\projects\mobidict\libmobi.patch
+    patch -p1 --binary < C:\projects\mobidict\libmobi.patch
 
     cd ..
 
     mkdir build
 
     cd build
-
-    dir C:\cygwin64\bin
 
     set PATH=C:\Qt\5.9.1\msvc2017_64\bin;%PATH%
 
