@@ -19,8 +19,14 @@ MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
   m_completer    = new Completer;
   m_currentDict  = nullptr;
   m_deviceSerial = QString::null;
+
+// On windows force ini format
+#if Q_OS_WIN
   m_settings     = new QSettings(QSettings::IniFormat, QSettings::UserScope,
                              qApp->organizationName(), qApp->applicationName());
+#else
+  m_settings     = new QSettings;
+#endif
 
   m_ui->searchLine->installEventFilter(this);
 
