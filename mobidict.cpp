@@ -3,6 +3,17 @@
 
 #include "mobidict.h"
 
+#if defined(Q_OS_WIN)
+if (QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS10)
+  static const char *emojiFont = "Segoe MDL2 Assets";
+else
+  static const char *emojiFont = "Segoe UI Symbol";
+#elif defined(Q_OS_LINUX)
+static const char *emojiFont = "NotoColorEmoji";
+#elif defined(Q_OS_MAC)
+static const char *emojiFont = "Apple Color Emoji";
+#endif
+
 MobiDict::MobiDict(const QString &path, const QString &serial) : QObject()
 {
   m_mobiData     = nullptr;
@@ -18,7 +29,7 @@ MobiDict::~MobiDict()
   mobi_free(m_mobiData);
   mobi_free_rawml(m_rawMarkup);
 
-  for(const auto& key : m_wordMap.keys())
+  for (const auto &key : m_wordMap.keys())
     qDeleteAll(m_wordMap[key]);
 }
 
@@ -42,7 +53,11 @@ QString MobiDict::entryForLink(const QString &link)
 QString MobiDict::entryForWord(const QString &word)
 {
   if (m_wordMap.constFind(word) == m_wordMap.constEnd())
-    return QString("<h1>Word not found.</h1>");
+    return QString(
+               "<br><br><center><font face='%1' size='+6'>🤔</font><br><br></span> The "
+               "word <b>%2</b> not found in dictionary.</center>")
+        .arg(emojiFont)
+        .arg(word);
 
   QString result;
 
@@ -156,7 +171,7 @@ MOBI_RET MobiDict::open()
       label = QString::fromUtf8(orth_entry->label);
 
     if (m_wordMap.constFind(label) != m_wordMap.constEnd())
-        qDebug() << label << "exists more than once.";
+      qDebug() << label << "exists more than once.";
 
     MobiEntry *mobiEntry  = new MobiEntry;
     mobiEntry->startPos   = entry_startpos;
