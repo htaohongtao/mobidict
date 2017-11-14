@@ -1,4 +1,6 @@
 #include <QtConcurrent/qtconcurrentrun.h>
+#include <QApplication>
+#include <QDesktopWidget>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QRegularExpression>
@@ -22,10 +24,10 @@ MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
 
 // On windows force ini format
 #ifdef Q_OS_WIN
-  m_settings     = new QSettings(QSettings::IniFormat, QSettings::UserScope,
+  m_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope,
                              qApp->organizationName(), qApp->applicationName());
 #else
-  m_settings     = new QSettings;
+  m_settings = new QSettings;
 #endif
 
   m_ui->searchLine->installEventFilter(this);
@@ -112,6 +114,10 @@ void MainWindow::showEvent(QShowEvent* ev)
 
   if (!rect.isEmpty())
     setGeometry(rect);
+  else {
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(),
+                                    qApp->desktop()->availableGeometry()));
+  }
 
   if (!splitterSizes.isEmpty())
     m_ui->splitter->restoreState(splitterSizes);
