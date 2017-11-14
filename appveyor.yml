@@ -39,7 +39,7 @@ build_script:
 
     cd build
 
-    dir C:/cygwin64/bin
+    dir C:\cygwin64\bin
 
     set PATH=C:\Qt\5.9.1\msvc2017_64\bin;%PATH%
 
