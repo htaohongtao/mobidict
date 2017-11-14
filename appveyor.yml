@@ -19,6 +19,16 @@ install:
 
     set PATH=C:\projects\deps\ninja;%PATH%
 
+    set PATCH_URL="https://downloads.sourceforge.net/project/gnuwin32/patch/2.5.9-7/patch-2.5.9-7-bin.zip"
+
+    appveyor DownloadFile %PATCH_URL% -FileName patch.zip
+
+    7z x patch.zip -oC:\projects\deps\patch > nul
+
+    set PATH=C:\projects\deps\patch\bin;%PATH%
+
+    patch --version
+
     ninja --version
     
     cmake --version
@@ -34,6 +44,12 @@ build_script:
     git submodule init
 
     git submodule update
+
+    cd libmobi
+
+    patch -p1 < C:\projects\mobidict\libmobi.patch
+
+    cd ..
 
     mkdir build
 
