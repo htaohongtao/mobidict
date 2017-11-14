@@ -27,7 +27,9 @@ set(SOURCES completer.cpp htmlbrowser.cpp main.cpp mainwindow.cpp
             libmobi/src/read.c libmobi/src/structure.c libmobi/tools/common.c
             libmobi/src/util.c)
 include_directories("libmobi/src")
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DUSE_ENCRYPTION")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUSE_ENCRYPTION")
 
 if (APPLE)
   set(OS_BUNDLE MACOSX_BUNDLE)
