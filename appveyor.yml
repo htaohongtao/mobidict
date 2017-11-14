@@ -29,7 +29,7 @@ before_build:
 
 build_script:
 - cmd: >-
-    cd \projects\deps\mobidict
+    cd C:\projects\deps\mobidict
 
     mkdir build
 
