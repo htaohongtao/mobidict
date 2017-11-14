@@ -7,9 +7,10 @@ build:
 
 install:
 - cmd: >-
-    - cd C:\projects\mobidict
-    - mkdir deps
-    - cd deps
+    echo %cd%
+    dir C:/projects
+    mkdir deps
+    cd deps
 
     set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.2/ninja-win.zip"
     appveyor DownloadFile %NINJA_URL% -FileName ninja.zip
