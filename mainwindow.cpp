@@ -329,7 +329,6 @@ void MainWindow::openLink(const QUrl& link)
         m_ui->matchesWidget->findItems(result, Qt::MatchFixedString)[0];
     m_ui->matchesWidget->setCurrentItem(item);
     m_ui->matchesWidget->scrollToItem(item);
-    m_ui->resultBrowser->setHtml(m_currentDict->lookupWord(result));
   }
 }
 
