@@ -23,7 +23,7 @@ MobiDict::~MobiDict()
     qDeleteAll(m_wordMap[key]);
 }
 
-QString MobiDict::entryForLink(const QString &link)
+QString MobiDict::resolveLink(const QString &link)
 {
   uint32_t offset = link.toUInt();
   QString match   = QString::null;
@@ -37,10 +37,10 @@ QString MobiDict::entryForLink(const QString &link)
     }
   }
 
-  return MobiDict::entryForWord(match);
+  return match;
 }
 
-QString MobiDict::entryForWord(const QString &word)
+QString MobiDict::lookupWord(const QString &word)
 {
   if (m_wordMap.constFind(word) == m_wordMap.constEnd())
     return QString::null;

@@ -24,8 +24,8 @@ class MobiDict : public QObject {
   MOBIPart* getResourceByUid(const size_t& uid);
 
   const QList<QString> words();
-  QString entryForLink(const QString&);
-  QString entryForWord(const QString&);
+  QString resolveLink(const QString&);
+  QString lookupWord(const QString&);
 
  private:
   MOBIData* m_mobiData;

@@ -239,7 +239,7 @@ void MainWindow::loadDictionary(const QString& text)
 void MainWindow::searchWord()
 {
   QString word = m_ui->searchLine->text();
-  QString html = m_currentDict->entryForWord(word);
+  QString html = m_currentDict->lookupWord(word);
 
   if (html.isNull())
     html = QString(
@@ -258,7 +258,7 @@ void MainWindow::searchItem(QListWidgetItem* item)
   if (!item)
     return;
 
-  QString html = m_currentDict->entryForWord(item->text());
+  QString html = m_currentDict->lookupWord(item->text());
   createResources(html);
 
   m_ui->resultBrowser->setHtml(html);
@@ -322,8 +322,15 @@ void MainWindow::createResources(const QString& html)
 
 void MainWindow::openLink(const QUrl& link)
 {
-  QString result = m_currentDict->entryForLink(link.toString());
-  m_ui->resultBrowser->setHtml(result);
+  QString result = m_currentDict->resolveLink(link.toString());
+
+  if (!result.isEmpty()) {
+    QListWidgetItem* item =
+        m_ui->matchesWidget->findItems(result, Qt::MatchFixedString)[0];
+    m_ui->matchesWidget->setCurrentItem(item);
+    m_ui->matchesWidget->scrollToItem(item);
+    m_ui->resultBrowser->setHtml(m_currentDict->lookupWord(result));
+  }
 }
 
 #ifdef AUTOTEST
