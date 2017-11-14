@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <QtGlobal>
+#include <QSysInfo>
 
 #include "mobidict.h"
 
