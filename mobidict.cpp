@@ -41,7 +41,7 @@ QString MobiDict::entryForLink(const QString &link)
 
 QString MobiDict::entryForWord(const QString &word)
 {
-  if (m_wordMap.find(word) == m_wordMap.constEnd())
+  if (m_wordMap.constFind(word) == m_wordMap.constEnd())
     return QString("<h1>Word not found.</h1>");
 
   QString result;
