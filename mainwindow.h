@@ -47,6 +47,7 @@ class MainWindow : public QMainWindow {
 
 #ifdef AUTOTEST
   void selfTest();
+  bool m_stopTesting;
 #endif
 };
 

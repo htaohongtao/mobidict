@@ -7,12 +7,13 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QShortcut>
-#include "mainwindow.h"
 
 #ifdef AUTOTEST
 #include <QTest>
 #define SELF_TEST
 #endif
+
+#include "mainwindow.h"
 
 MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
 {
@@ -24,6 +25,13 @@ MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
   m_currentDict     = nullptr;
   m_currentDictName = QString::null;
   m_deviceSerial    = QString::null;
+
+#ifdef AUTOTEST
+  m_stopTesting = false;
+
+  // We need to handle Esc key to stop testing.
+  installEventFilter(this);
+#endif
 
 // On windows force ini format
 #ifdef Q_OS_WIN
@@ -73,14 +81,20 @@ MainWindow::~MainWindow()
 
 bool MainWindow::eventFilter(QObject* obj, QEvent* event)
 {
-  if ((obj == m_ui->searchLine) && (event->type() == QEvent::KeyPress)) {
+  if (event->type() == QEvent::KeyPress) {
     QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-    if (keyEvent->key() == Qt::Key_Down) {
-      m_ui->matchesWidget->setFocus();
-      m_ui->matchesWidget->setCurrentItem(m_ui->matchesWidget->item(0));
+    if (obj == m_ui->searchLine) {
+      if (keyEvent->key() == Qt::Key_Down) {
+        m_ui->matchesWidget->setFocus();
+        m_ui->matchesWidget->setCurrentItem(m_ui->matchesWidget->item(0));
+      }
     }
-  }
 
+#ifdef AUTOTEST
+    if (keyEvent->key() == Qt::Key_Escape)
+      m_stopTesting = true;
+#endif
+  }
   return false;
 }
 
@@ -299,15 +313,20 @@ void MainWindow::openLink(const QUrl& link)
 #ifdef AUTOTEST
 void MainWindow::selfTest()
 {
+  m_stopTesting = false;
+
   QApplication::processEvents();
   for (int i = 0; i < m_ui->matchesWidget->count(); ++i) {
+    if (m_stopTesting)
+      break;
+
     QListWidgetItem* item = m_ui->matchesWidget->item(i);
     QPoint center         = m_ui->matchesWidget->visualItemRect(item).center();
     QWidget* viewPort     = m_ui->matchesWidget->viewport();
     m_ui->matchesWidget->setCurrentItem(item);
 
     QTest::mouseClick(viewPort, Qt::LeftButton, Qt::NoModifier, center, 0);
-    QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+    QApplication::processEvents();
   }
 }
 #endif
