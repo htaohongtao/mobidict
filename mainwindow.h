@@ -37,6 +37,7 @@ class MainWindow : public QMainWindow {
   QString m_currentDictName;
   Completer* m_completer;
   QString m_deviceSerial;
+  QString m_emojiFont;
 
   QFutureWatcher<MOBI_RET> m_watcher;
   QFuture<MOBI_RET> m_future;

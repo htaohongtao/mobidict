@@ -12,14 +12,6 @@ MobiDict::MobiDict(const QString &path, const QString &serial) : QObject()
   m_title        = QString::null;
   m_codec        = nullptr;
   m_deviceSerial = serial;
-
-#if defined(Q_OS_WIN)
-  m_emojiFont = "Segoe UI Emoji";
-#elif defined(Q_OS_LINUX)
-  m_emojiFont = "NotoColorEmoji";
-#elif defined(Q_OS_MAC)
-  m_emojiFont = "Apple Color Emoji";
-#endif
 }
 
 MobiDict::~MobiDict()
@@ -51,11 +43,7 @@ QString MobiDict::entryForLink(const QString &link)
 QString MobiDict::entryForWord(const QString &word)
 {
   if (m_wordMap.constFind(word) == m_wordMap.constEnd())
-    return QString(
-               "<br><br><center><font face='%1' size='+6'>🤔</font><br><br></span> The "
-               "word <b>%2</b> not found in dictionary.</center>")
-        .arg(m_emojiFont)
-        .arg(word);
+    return QString::null;
 
   QString result;
 

@@ -38,7 +38,15 @@ MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
   m_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope,
                              qApp->organizationName(), qApp->applicationName());
 #else
-  m_settings = new QSettings;
+  m_settings  = new QSettings;
+#endif
+
+#if defined(Q_OS_WIN)
+  m_emojiFont = "Segoe UI Emoji";
+#elif defined(Q_OS_LINUX)
+  m_emojiFont = "NotoColorEmoji";
+#elif defined(Q_OS_MAC)
+  m_emojiFont = "Apple Color Emoji";
 #endif
 
   m_ui->searchLine->installEventFilter(this);
@@ -233,7 +241,15 @@ void MainWindow::searchWord()
   QString word = m_ui->searchLine->text();
   QString html = m_currentDict->entryForWord(word);
 
-  createResources(html);
+  if (html.isNull())
+    html = QString(
+               "<br><br><center><font face='%1' size='+6'>🤔</font><br><br></span> The "
+               "word <b>%2</b> not found in dictionary.</center>")
+               .arg(m_emojiFont)
+               .arg(word);
+  else
+    createResources(html);
+
   m_ui->resultBrowser->setHtml(html);
 }
 
