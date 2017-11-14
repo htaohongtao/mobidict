@@ -18,7 +18,8 @@ MobiDict::~MobiDict()
   mobi_free(m_mobiData);
   mobi_free_rawml(m_rawMarkup);
 
-  qDeleteAll(m_wordMap);
+  for(const auto& key : m_wordMap.keys())
+    qDeleteAll(m_wordMap[key]);
 }
 
 QString MobiDict::entryForLink(const QString &link)
@@ -27,9 +28,11 @@ QString MobiDict::entryForLink(const QString &link)
   QString match   = QString::null;
 
   for (const auto &entry : m_wordMap.keys()) {
-    if (m_wordMap[entry]->startPos == offset) {
-      match = entry;
-      break;
+    for (const auto &mobiEntry : m_wordMap[entry]) {
+      if (mobiEntry->startPos == offset) {
+        match = entry;
+        break;
+      }
     }
   }
 
@@ -42,29 +45,32 @@ QString MobiDict::entryForWord(const QString &word)
     return QString("<h1>Word not found.</h1>");
 
   QString result;
-  MobiEntry *mobiEntry    = m_wordMap[word];
-  uint32_t entry_startpos = mobiEntry->startPos;
-  uint32_t entry_textlen  = mobiEntry->textLength;
 
-  char *entry = new char[entry_textlen + 1];
-  memcpy(entry, m_rawMarkup->flow->data + entry_startpos, entry_textlen);
-  entry[entry_textlen] = '\0';
+  for (const auto &mobiEntry : m_wordMap[word]) {
+    MobiEntry *m            = mobiEntry;
+    uint32_t entry_startpos = m->startPos;
+    uint32_t entry_textlen  = m->textLength;
 
-  if (m_isCP1252)
-    result = m_codec->toUnicode(entry);
-  else
-    result = QString::fromUtf8(entry);
+    char *entry = new char[entry_textlen + 1];
+    memcpy(entry, m_rawMarkup->flow->data + entry_startpos, entry_textlen);
+    entry[entry_textlen] = '\0';
 
-  delete[] entry;
-  entry = nullptr;
+    if (m_isCP1252)
+      result.append(m_codec->toUnicode(entry));
+    else
+      result.append(QString::fromUtf8(entry));
 
-  // Change filepos -> href, hirecindex -> src
-  // so that Qt can give us a url in QTextBrowser::loadResource()
-  result = result.replace("filepos=", "href=");
-  result = result.replace("hirecindex=", "src=");
+    delete[] entry;
+    entry = nullptr;
 
-  // qDebug() << "HTML entry:";
-  // qDebug() << result;
+    // Change filepos -> href, hirecindex -> src
+    // so that Qt can give us a url in QTextBrowser::loadResource()
+    result = result.replace("filepos=", "href=");
+    result = result.replace("hirecindex=", "src=");
+
+    // qDebug() << "HTML entry:";
+    // qDebug() << result;
+  }
 
   return result;
 }
@@ -150,13 +156,13 @@ MOBI_RET MobiDict::open()
       label = QString::fromUtf8(orth_entry->label);
 
     if (m_wordMap.constFind(label) != m_wordMap.constEnd())
-      continue;
+        qDebug() << label << "exists more than once.";
 
     MobiEntry *mobiEntry  = new MobiEntry;
     mobiEntry->startPos   = entry_startpos;
     mobiEntry->textLength = entry_textlen;
 
-    m_wordMap[label] = mobiEntry;
+    m_wordMap[label].append(mobiEntry);
 
     // qDebug("Adding %s", orth_entry->label);
   }

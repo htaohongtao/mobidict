@@ -37,7 +37,7 @@ class MobiDict : public QObject {
 
   bool m_isCP1252;
 
-  QMap<QString, MobiEntry*> m_wordMap;
+  QMap<QString, QList<MobiEntry*>> m_wordMap;
   QTextCodec* m_codec;
 };
 
