@@ -34,6 +34,7 @@ class MainWindow : public QMainWindow {
   Ui::MainWindow* m_ui;
 
   MobiDict* m_currentDict;
+  QString m_currentDictName;
   Completer* m_completer;
   QString m_deviceSerial;
 

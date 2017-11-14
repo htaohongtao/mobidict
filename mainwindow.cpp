@@ -18,9 +18,10 @@ MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
   m_ui->splitter->setStretchFactor(0, 2);
   m_ui->splitter->setStretchFactor(1, 8);
 
-  m_completer    = new Completer;
-  m_currentDict  = nullptr;
-  m_deviceSerial = QString::null;
+  m_completer       = new Completer;
+  m_currentDict     = nullptr;
+  m_currentDictName = QString::null;
+  m_deviceSerial    = QString::null;
 
 // On windows force ini format
 #ifdef Q_OS_WIN
@@ -141,7 +142,8 @@ void MainWindow::dictionaryLoaded()
 
     setWindowTitle("Mobidict");
     delete m_currentDict;
-    m_currentDict = nullptr;
+    m_currentDict     = nullptr;
+    m_currentDictName = QString::null;
   }
   else {
     m_completer->setWordList(m_currentDict->words());
@@ -189,10 +191,14 @@ bool MainWindow::discoverDictionaries()
 
 void MainWindow::loadDictionary(const QString& text)
 {
+  if (m_currentDictName == text)
+    return;
+
   if (m_currentDict)
     delete m_currentDict;
 
-  m_currentDict = new MobiDict(
+  m_currentDictName = text;
+  m_currentDict     = new MobiDict(
       QString("%1/Dictionaries/%2").arg(QDir::homePath()).arg(text), m_deviceSerial);
   m_future = QtConcurrent::run(m_currentDict, &MobiDict::open);
   m_watcher.setFuture(m_future);
