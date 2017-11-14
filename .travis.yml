@@ -1,4 +1,5 @@
 os:
+- linux
 - osx
 osx_image: xcode9.1
 sudo: required
@@ -6,6 +7,7 @@ dist: trusty
 language: c++
 compiler:
 - clang
+- gcc
 deploy:
   provider: pages
   skip_cleanup: true
@@ -13,6 +15,7 @@ deploy:
   local_dir: dist
   on:
     branch: master
+    condition: "($CC = clang) && ($TRAVIS_OS_NAME = osx)"
 before_install:
 - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
     sudo apt-get update -qq;
