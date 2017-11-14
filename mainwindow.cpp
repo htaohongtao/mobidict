@@ -21,7 +21,7 @@ MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
   m_deviceSerial = QString::null;
 
 // On windows force ini format
-#if Q_OS_WIN
+#ifdef Q_OS_WIN
   m_settings     = new QSettings(QSettings::IniFormat, QSettings::UserScope,
                              qApp->organizationName(), qApp->applicationName());
 #else
