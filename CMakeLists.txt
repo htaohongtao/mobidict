@@ -9,6 +9,9 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 find_package(Qt5 COMPONENTS Concurrent Widgets Test REQUIRED)
+if (NOT WIN32)
+  find_package(ZLIB)
+endif()
 
 qt5_wrap_ui(UI_HEADERS mainwindow.ui)
 
@@ -18,37 +21,27 @@ set(SOURCES completer.cpp htmlbrowser.cpp main.cpp mainwindow.cpp
             libmobi/src/meta.c libmobi/src/parse_rawml.c libmobi/src/sha1.c
             libmobi/src/read.c libmobi/src/structure.c libmobi/tools/common.c
             libmobi/src/util.c)
-
+include_directories("libmobi/src")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DUSE_ENCRYPTION")
 
 if (APPLE)
-    set(OS_BUNDLE MACOSX_BUNDLE)
-    set(RES_FILES "res/app.icns")
-    set_source_files_properties("res/app.icns" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+  set(OS_BUNDLE MACOSX_BUNDLE)
+  set(RES_FILES "res/app.icns")
+  set_source_files_properties("res/app.icns" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+elseif(UNIX)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 elseif (WIN32)
-    set(RES_FILES "mobidict.rc")
-    set(OS_BUNDLE WIN32)
-    ENABLE_LANGUAGE(RC)
-endif()
-
-if (WIN32)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DUSE_MINIZ")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUSE_MINIZ /std:c++latest")
-    list(APPEND SOURCES libmobi/src/miniz.c)
-else()
-    find_package(ZLIB)
-endif()
-
-if(UNIX)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+  ENABLE_LANGUAGE(RC)
+  list(APPEND SOURCES libmobi/src/miniz.c)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D_CRT_SECURE_NO_WARNINGS /DUSE_MINIZ /std:c++latest")
+  set(OS_BUNDLE WIN32)
+  set(RES_FILES "mobidict.rc")
 endif()
 
 if (NOT CMAKE_BUILD_TYPE MATCHES "Debug")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQT_NO_DEBUG_OUTPUT")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQT_NO_DEBUG_OUTPUT")
 endif()
-
-include_directories("libmobi/src")
 
 add_executable(mobidict ${OS_BUNDLE} ${SOURCES} ${UI_HEADERS} ${RES_FILES})
 target_link_libraries(mobidict Qt5::Concurrent Qt5::Test Qt5::Widgets ${ZLIB_LIBRARIES})
