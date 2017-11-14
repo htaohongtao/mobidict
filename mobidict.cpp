@@ -1,19 +1,8 @@
 #include <QDebug>
-#include <QtGlobal>
 #include <QSysInfo>
+#include <QtGlobal>
 
 #include "mobidict.h"
-
-#if defined(Q_OS_WIN)
-if (QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS10)
-  static const char *emojiFont = "Segoe MDL2 Assets";
-else
-  static const char *emojiFont = "Segoe UI Symbol";
-#elif defined(Q_OS_LINUX)
-static const char *emojiFont = "NotoColorEmoji";
-#elif defined(Q_OS_MAC)
-static const char *emojiFont = "Apple Color Emoji";
-#endif
 
 MobiDict::MobiDict(const QString &path, const QString &serial) : QObject()
 {
@@ -23,6 +12,17 @@ MobiDict::MobiDict(const QString &path, const QString &serial) : QObject()
   m_title        = QString::null;
   m_codec        = nullptr;
   m_deviceSerial = serial;
+
+#if defined(Q_OS_WIN)
+  if (QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS10)
+    m_emojiFont = "Segoe MDL2 Assets";
+  else
+    m_emojiFont = "Segoe UI Symbol";
+#elif defined(Q_OS_LINUX)
+  m_emojiFont = "NotoColorEmoji";
+#elif defined(Q_OS_MAC)
+  m_emojiFont = "Apple Color Emoji";
+#endif
 }
 
 MobiDict::~MobiDict()
@@ -57,7 +57,7 @@ QString MobiDict::entryForWord(const QString &word)
     return QString(
                "<br><br><center><font face='%1' size='+6'>🤔</font><br><br></span> The "
                "word <b>%2</b> not found in dictionary.</center>")
-        .arg(emojiFont)
+        .arg(m_emojiFont)
         .arg(word);
 
   QString result;

@@ -32,6 +32,7 @@ class MobiDict : public QObject {
   MOBIRawml* m_rawMarkup;
 
   QString m_deviceSerial;
+  QString m_emojiFont;
   QString m_path;
   QString m_title;
 
