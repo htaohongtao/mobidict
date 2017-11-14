@@ -29,8 +29,8 @@ before_build:
 
 build_script:
 - cmd: >-
-	mkdir build
-	cd build
-	cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
-	ninja
+    mkdir build
+    cd build
+    cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+    ninja
 
