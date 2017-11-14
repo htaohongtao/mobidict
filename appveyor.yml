@@ -20,17 +20,7 @@ install:
     set PATH=C:\projects\deps\ninja;%PATH%
 
     ninja --version
-
-    set CMAKE_URL="https://cmake.org/files/v3.9/cmake-3.9.3-win64-x64.zip"
-
-    appveyor DownloadFile %CMAKE_URL% -FileName cmake.zip
-
-    7z x cmake.zip -oC:\projects\mobidict\deps > nul
-
-    move C:\projects\deps\cmake-* C:\projects\deps\cmake
-
-    set PATH=C:\projects\deps\cmake\bin;%PATH%
-
+    
     cmake --version
 
 before_build:
