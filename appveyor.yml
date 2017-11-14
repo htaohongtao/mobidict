@@ -7,19 +7,21 @@ build:
 
 install:
 - cmd: >-
-    cd C:\projects\deps
+    cd C:\projects\mobidict
+    mkdir deps
+    cd deps
 
     set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.2/ninja-win.zip"
     appveyor DownloadFile %NINJA_URL% -FileName ninja.zip
-    7z x ninja.zip -oC:\projects\deps\ninja > nul
-    set PATH=C:\projects\deps\ninja;%PATH%
+    7z x ninja.zip -oC:\projects\modidict\deps\ninja > nul
+    set PATH=C:\projects\mobidict\deps\ninja;%PATH%
     ninja --version
 
     set CMAKE_URL="https://cmake.org/files/v3.9/cmake-3.9.3-win64-x64.zip"
     appveyor DownloadFile %CMAKE_URL% -FileName cmake.zip
-    7z x cmake.zip -oC:\projects\deps > nul
-    move C:\projects\deps\cmake-* C:\projects\deps\cmake # Move to a version-agnostic directory
-    set PATH=C:\projects\deps\cmake\bin;%PATH%
+    7z x cmake.zip -oC:\projects\mobidict\deps > nul
+    move C:\projects\mobidict\deps\cmake-* C:\projects\mobidict\deps\cmake
+    set PATH=C:\projects\deps\mobidict\cmake\bin;%PATH%
     cmake --version
 
 before_build:
