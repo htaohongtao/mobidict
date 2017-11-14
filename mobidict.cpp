@@ -14,10 +14,7 @@ MobiDict::MobiDict(const QString &path, const QString &serial) : QObject()
   m_deviceSerial = serial;
 
 #if defined(Q_OS_WIN)
-  if (QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS10)
-    m_emojiFont = "Segoe MDL2 Assets";
-  else
-    m_emojiFont = "Segoe UI Symbol";
+  m_emojiFont = "Segoe UI Emoji";
 #elif defined(Q_OS_LINUX)
   m_emojiFont = "NotoColorEmoji";
 #elif defined(Q_OS_MAC)
