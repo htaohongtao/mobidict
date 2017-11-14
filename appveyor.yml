@@ -31,6 +31,10 @@ build_script:
 - cmd: >-
     cd C:\projects\mobidict
 
+    git submodule init
+
+    git submodule update
+
     mkdir build
 
     cd build
