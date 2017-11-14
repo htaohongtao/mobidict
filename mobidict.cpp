@@ -142,10 +142,6 @@ MOBI_RET MobiDict::open()
       continue;
     }
 
-    MobiEntry *mobiEntry  = new MobiEntry;
-    mobiEntry->startPos   = entry_startpos;
-    mobiEntry->textLength = entry_textlen;
-
     QString label;
 
     if (m_isCP1252)
@@ -155,6 +151,10 @@ MOBI_RET MobiDict::open()
 
     if (m_wordMap.constFind(label) != m_wordMap.constEnd())
       continue;
+
+    MobiEntry *mobiEntry  = new MobiEntry;
+    mobiEntry->startPos   = entry_startpos;
+    mobiEntry->textLength = entry_textlen;
 
     m_wordMap[label] = mobiEntry;
 
