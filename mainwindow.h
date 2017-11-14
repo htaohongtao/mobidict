@@ -44,7 +44,10 @@ class MainWindow : public QMainWindow {
   QSettings* m_settings;
 
   void createResources(const QString&);
+
+#ifdef AUTOTEST
   void selfTest();
+#endif
 };
 
 #endif

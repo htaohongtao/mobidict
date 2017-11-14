@@ -2,15 +2,17 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QFileDialog>
+#include <QKeyEvent>
 #include <QMessageBox>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QShortcut>
-#include <QTest>
-
 #include "mainwindow.h"
 
-//#define SELF_TEST
+#ifdef AUTOTEST
+#include <QTest>
+#define SELF_TEST
+#endif
 
 MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
 {
@@ -294,6 +296,7 @@ void MainWindow::openLink(const QUrl& link)
   m_ui->resultBrowser->setHtml(result);
 }
 
+#ifdef AUTOTEST
 void MainWindow::selfTest()
 {
   QApplication::processEvents();
@@ -307,3 +310,4 @@ void MainWindow::selfTest()
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
   }
 }
+#endif
