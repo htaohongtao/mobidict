@@ -7,13 +7,11 @@ build:
 
 install:
 - cmd: >-
-    dir C:\projects
-
     mkdir C:\projects\deps
 
     cd C:\projects\deps
 
-    set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.2/ninja-win.zip"
+    set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-win.zip"
 
     appveyor DownloadFile %NINJA_URL% -FileName ninja.zip
 
