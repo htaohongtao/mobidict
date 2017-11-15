@@ -334,13 +334,12 @@ void MainWindow::createResources(const QString& html)
 
 void MainWindow::openLink(const QUrl& link)
 {
-  QString result = m_currentDict->resolveLink(link.toString());
+  QString match = m_currentDict->resolveLink(link.toString());
 
-  if (!result.isEmpty()) {
-    QListWidgetItem* item =
-        m_ui->matchesWidget->findItems(result, Qt::MatchFixedString)[0];
-    m_ui->matchesWidget->setCurrentItem(item);
-    m_ui->matchesWidget->scrollToItem(item);
+  // TODO: Have to provide feedback for broken links
+  if (!match.isEmpty()) {
+    QString html = m_currentDict->lookupWord(match);
+    m_ui->resultBrowser->setHtml(html);
   }
 }
 
