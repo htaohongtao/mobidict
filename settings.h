@@ -21,4 +21,5 @@ class Settings : public QDialog {
   Ui::Settings* m_ui;
   QSettings* m_settings;
 };
+
 #endif

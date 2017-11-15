@@ -207,7 +207,7 @@ bool MainWindow::discoverDictionaries()
 
   if (dictionaries.isEmpty()) {
     QMessageBox::critical(nullptr, "No dictionary found",
-                          QString("Please put your dictionaries (in mobi format) under "
+                          QString("Please put your dictionaries (in azw/mobi format) under "
                                   "<b>%1/Dictionaries</b> and retry.")
                               .arg(QDir::homePath()));
     return false;
