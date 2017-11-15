@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QElapsedTimer>
 #include <QSysInfo>
 #include <QtGlobal>
 
@@ -99,6 +100,11 @@ MOBI_RET MobiDict::open()
   if (file == nullptr)
     return MOBI_ERROR;
 
+#ifndef NDEBUG
+  QElapsedTimer timer;
+  timer.start();
+#endif
+
   MOBI_RET mobi_ret = mobi_load_file(m_mobiData, file);
   fclose(file);
 
@@ -139,6 +145,10 @@ MOBI_RET MobiDict::open()
 
   size_t count = m_rawMarkup->orth->total_entries_count;
 
+#ifndef NDEBUG
+  QStringList multiples;
+#endif
+
   for (size_t i = 0; i < count; ++i) {
     const MOBIIndexEntry *orth_entry = &m_rawMarkup->orth->entries[i];
     entry_startpos                   = mobi_get_orth_entry_start_offset(orth_entry);
@@ -156,8 +166,10 @@ MOBI_RET MobiDict::open()
     else
       label = QString::fromUtf8(orth_entry->label);
 
+#ifndef NDEBUG
     if (m_wordMap.constFind(label) != m_wordMap.constEnd())
-      qDebug() << label << "exists more than once.";
+      multiples << label;
+#endif
 
     MobiEntry *mobiEntry  = new MobiEntry;
     mobiEntry->startPos   = entry_startpos;
@@ -171,7 +183,11 @@ MOBI_RET MobiDict::open()
   if (m_wordMap.isEmpty())
     return MOBI_DATA_CORRUPT;
 
-  qDebug("Dictionary loaded.");
+#ifndef NDEBUG
+  qDebug() << "Dictionary loaded in" << timer.elapsed() << "miliseconds";
+  qDebug() << "Here are the words with multiple entries:";
+  qDebug() << multiples;
+#endif
 
   return MOBI_SUCCESS;
 }
