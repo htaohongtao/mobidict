@@ -49,6 +49,8 @@ build_script:
 
     patch -p1 --binary < C:\projects\mobidict\libmobi.patch
 
+    patch -p1 --binary < C:\projects\mobidict\update-enc-length.patch
+
     cd ..
 
     mkdir build
