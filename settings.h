@@ -6,6 +6,7 @@
 #include "ui_settings.h"
 
 class QSettings;
+class QShowEvent;
 
 class Settings : public QDialog {
   Q_OBJECT
@@ -14,8 +15,11 @@ class Settings : public QDialog {
   Settings(QWidget* parent, QSettings*);
   ~Settings();
 
- public slots:
+ private slots:
   void saveSettings();
+
+ protected:
+  void showEvent(QShowEvent*) override;
 
  private:
   Ui::Settings* m_ui;

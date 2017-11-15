@@ -11,14 +11,6 @@ Settings::Settings(QWidget* parent, QSettings* settings) : QDialog(parent), m_ui
   for (const auto& point : QFontDatabase::standardSizes())
     m_ui->pointComboBox->addItem(QString::number(point));
 
-  QString fontName     = m_settings->value("viewer/fontName", "Consolas").toString();
-  int fontSize         = m_settings->value("viewer/fontSize", 18).toInt();
-  QString deviceSerial = m_settings->value("viewer/deviceSerial", QString()).toString();
-
-  m_ui->fontComboBox->setCurrentFont(QFont(fontName, fontSize));
-  m_ui->serialNumber->setText(deviceSerial);
-  m_ui->pointComboBox->setCurrentText(QString::number(fontSize));
-
   connect(this, &QDialog::accepted, this, &Settings::saveSettings);
 }
 
@@ -28,11 +20,24 @@ Settings::~Settings()
   m_ui = nullptr;
 }
 
+void Settings::showEvent(QShowEvent* ev)
+{
+  QString fontName     = m_settings->value("viewer/fontName", "Consolas").toString();
+  int fontSize         = m_settings->value("viewer/fontSize", 18).toInt();
+  QString deviceSerial = m_settings->value("viewer/deviceSerial", QString()).toString();
+
+  m_ui->fontComboBox->setCurrentFont(QFont(fontName, fontSize));
+  m_ui->serialNumber->setText(deviceSerial);
+  m_ui->pointComboBox->setCurrentText(QString::number(fontSize));
+
+  QDialog::showEvent(ev);
+}
+
 void Settings::saveSettings()
 {
   QString fontName     = m_ui->fontComboBox->currentFont().family();
   int pointSize        = m_ui->pointComboBox->currentText().toUInt(nullptr);
-  QString deviceSerial = m_ui->serialNumber->text();
+  QString deviceSerial = m_ui->serialNumber->text().replace(" ","");
 
   m_settings->setValue("viewer/fontName", fontName);
   m_settings->setValue("viewer/fontSize", pointSize);
