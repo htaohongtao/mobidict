@@ -67,3 +67,15 @@ endif()
 
 add_executable(mobidict ${OS_BUNDLE} ${SOURCES} ${UI_HEADERS} ${RES_FILES})
 target_link_libraries(mobidict Qt5::Concurrent Qt5::Widgets ${TEST_LIB} ${ZLIB_LIBRARIES})
+
+if (WIN32)
+  install(TARGETS "mobidict" RUNTIME DESTINATION .)
+
+  get_property(QT_GIF_PLUGIN TARGET Qt5::QGifPlugin PROPERTY LOCATION_RELEASE)
+  get_target_property(QT_JPEG_PLUGIN Qt5::QJpegPlugin LOCATION)
+  get_target_property(QT_SVG_PLUGIN Qt5::QSvgIconPlugin LOCATION)
+
+  install_qt5_executable("mobidict" "${QT_GIF_PLUGIN} ${QT_JPEG_PLUGIN} ${QT_SVG_PLUGIN}")
+
+  set(CPACK_GENERATOR NSIS)
+endif()
