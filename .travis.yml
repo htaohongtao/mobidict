@@ -37,6 +37,6 @@ script:
 - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
     /usr/local/opt/qt/bin/macdeployqt mobidict.app;
     tree mobidict.app;
-    hdiutil create mobidict.dmg -volname "Mobidict" -fs HFS+ -srcfolder "mobidict.app";
-    mkdir dist; mv mobidict.dmg dist;
+    hdiutil create mobidict-1.0.dmg -volname "Mobidict" -fs HFS+ -srcfolder "mobidict.app";
+    mkdir dist; mv mobidict-1.0.dmg dist;
   fi
