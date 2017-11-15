@@ -77,7 +77,7 @@ if (WIN32)
   install_qt5_executable("mobidict.exe" "${QT_GIF_PLUGIN};${QT_JPEG_PLUGIN}" "" "" "plugins" TRUE)
 
   set(CPACK_GENERATOR NSIS)
-  set(CPACK_NSIS_DISPLAY_NAME "Mobidict 1.0")
+  set(CPACK_NSIS_DISPLAY_NAME "Mobidict")
   set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
   set(CPACK_NSIS_MUI_ICON "${CMAKE_CURRENT_SOURCE_DIR}/res/app.ico")
   set(CPACK_NSIS_INSTALLED_ICON_NAME "mobidict.exe")
