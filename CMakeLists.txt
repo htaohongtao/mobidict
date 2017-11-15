@@ -6,7 +6,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
@@ -21,13 +20,13 @@ if (NOT WIN32)
 endif()
 
 set(SOURCES completer.cpp htmlbrowser.cpp main.cpp mainwindow.cpp settings.cpp
-            mobidict.cpp libmobi/src/buffer.c libmobi/src/compression.c
+            mobidict.cpp resources.qrc libmobi/src/buffer.c libmobi/src/compression.c
             libmobi/src/encryption.c libmobi/src/index.c libmobi/src/memory.c
             libmobi/src/meta.c libmobi/src/parse_rawml.c libmobi/src/sha1.c
             libmobi/src/read.c libmobi/src/structure.c libmobi/tools/common.c
             libmobi/src/util.c)
 
-list(APPEND SOURCES mainwindow.ui settings.ui resources.qrc)
+qt5_wrap_ui(UI_HEADERS mainwindow.ui settings.ui)
 
 include_directories("libmobi/src")
 
