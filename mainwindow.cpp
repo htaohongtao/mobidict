@@ -91,6 +91,9 @@ MainWindow::~MainWindow()
 
   delete m_settings;
   m_settings = nullptr;
+
+  delete m_settingsDialog;
+  m_settingsDialog = nullptr;
 }
 
 bool MainWindow::eventFilter(QObject* obj, QEvent* event)
