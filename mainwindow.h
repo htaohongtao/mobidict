@@ -3,12 +3,13 @@
 
 #include <QFutureWatcher>
 #include <QSettings>
+#include <QWidget>
 
 #include "completer.h"
 #include "mobidict.h"
 #include "ui_mainwindow.h"
 
-class MainWindow : public QMainWindow {
+class MainWindow : public QWidget {
   Q_OBJECT
 
  public:

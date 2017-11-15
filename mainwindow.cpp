@@ -7,6 +7,7 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QShortcut>
+#include <QWidget>
 
 #ifdef AUTOTEST
 #include <QTest>
@@ -15,7 +16,7 @@
 
 #include "mainwindow.h"
 
-MainWindow::MainWindow() : QMainWindow(), m_ui(new Ui::MainWindow())
+MainWindow::MainWindow() : QWidget(), m_ui(new Ui::MainWindow())
 {
   m_ui->setupUi(this);
   m_ui->splitter->setStretchFactor(0, 2);
@@ -112,7 +113,7 @@ void MainWindow::closeEvent(QCloseEvent* ev)
   m_settings->setValue("mainwindow/splitterSizes", m_ui->splitter->saveState());
   m_settings->setValue("viewer/lastDictionary", m_ui->dictComboBox->currentText());
 
-  QMainWindow::closeEvent(ev);
+  QWidget::closeEvent(ev);
 }
 
 void MainWindow::showEvent(QShowEvent* ev)
@@ -152,7 +153,7 @@ void MainWindow::showEvent(QShowEvent* ev)
   else
     loadDictionary(m_ui->dictComboBox->currentText());
 
-  QMainWindow::showEvent(ev);
+  QWidget::showEvent(ev);
 }
 
 void MainWindow::dictionaryLoaded()
