@@ -72,6 +72,7 @@ MainWindow::MainWindow() : QWidget(), m_ui(new Ui::MainWindow())
           &MainWindow::showSettingsDialog);
 
   new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_L), m_ui->searchLine, SLOT(setFocus()));
+  new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_M), m_ui->matchesWidget, SLOT(setFocus()));
 
 #ifdef Q_OS_OSX
   m_ui->matchesWidget->setAttribute(Qt::WA_MacShowFocusRect, 0);

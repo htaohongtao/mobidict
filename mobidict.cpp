@@ -104,7 +104,7 @@ MOBI_RET MobiDict::open()
 
   if (mobi_is_encrypted(m_mobiData)) {
     if (!m_deviceSerial.isEmpty()) {
-      qWarning() << "Using device serial" << m_deviceSerial;
+      //qWarning() << "Using device serial" << m_deviceSerial;
       mobi_drm_setkey_serial(m_mobiData, m_deviceSerial.toLatin1());
     }
     else {
