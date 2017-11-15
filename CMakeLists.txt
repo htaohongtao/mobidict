@@ -71,8 +71,8 @@ if (WIN32)
 
   install(TARGETS mobidict RUNTIME DESTINATION .)
 
-  get_target_property(QT_GIF_PLUGIN TARGET Qt5::QGifPlugin PROPERTY LOCATION_RELEASE)
-  get_target_property(QT_JPEG_PLUGIN Qt5::QJpegPlugin LOCATION)
+  get_property(QT_GIF_PLUGIN TARGET Qt5::QGifPlugin PROPERTY LOCATION_RELEASE)
+  get_property(QT_JPEG_PLUGIN TARGET Qt5::QJpegPlugin PROPERTY LOCATION_RELEASE)
 
   install_qt5_executable("mobidict.exe" "${QT_GIF_PLUGIN};${QT_JPEG_PLUGIN}")
 
