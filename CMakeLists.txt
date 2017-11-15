@@ -80,8 +80,6 @@ if (WIN32)
   set(CPACK_NSIS_DISPLAY_NAME "Mobidict")
   set(CPACK_NSIS_CREATE_ICONS_EXTRA
       "CreateShortCut '$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\MobiDict.lnk' '$INSTDIR\\\\mobidict.exe'")
-  set(CPACK_NSIS_CREATE_ICONS_EXTRA
-      "CreateShortCut '$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\Uninstall.lnk' '$INSTDIR\\\\Uninstall.exe'")
   set(CPACK_NSIS_DELETE_ICONS_EXTRA
       "Delete '$SMPROGRAMS\\\\$START_MENU\\\\MobiDict.lnk'")
   set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
