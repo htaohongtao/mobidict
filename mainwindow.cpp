@@ -244,7 +244,7 @@ void MainWindow::searchWord()
   if (html.isNull())
     html = QString(
                "<br><br><center><font face='%1' size='+6'>🤔</font><br><br></span> The "
-               "word <b>\"%2\"</b> not found in dictionary.</center>")
+               "word <b>\"%2\"</b> not found in the dictionary.</center>")
                .arg(m_emojiFont)
                .arg(word);
   else
