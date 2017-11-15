@@ -133,8 +133,8 @@ void MainWindow::showEvent(QShowEvent* ev)
   QString lastDictionary =
       m_settings->value("viewer/lastDictionary", QString()).toString();
 
-  QString fontName = m_settings->value("viewer/fontName", "Consolas").toString();
-  int fontSize     = m_settings->value("viewer/fontSize", 18).toInt();
+  m_fontName = m_settings->value("viewer/fontName", "Consolas").toString();
+  m_fontSize = m_settings->value("viewer/fontSize", 18).toInt();
 
   QString deviceSerial = m_settings->value("viewer/deviceSerial", QString()).toString();
 
@@ -144,7 +144,7 @@ void MainWindow::showEvent(QShowEvent* ev)
   }
 
   m_ui->resultBrowser->document()->setDefaultStyleSheet(
-      QString("* {font-size: %1px; font-family:%2 }").arg(fontSize).arg(fontName));
+      QString("* {font-size: %1px; font-family:%2 }").arg(m_fontSize).arg(m_fontName));
 
   if (!rect.isEmpty())
     setGeometry(rect);
@@ -209,10 +209,11 @@ bool MainWindow::discoverDictionaries()
       dir.entryList(formats, QDir::Files | QDir::Readable, QDir::Name);
 
   if (dictionaries.isEmpty()) {
-    QMessageBox::critical(nullptr, "No dictionary found",
-                          QString("Please put your dictionaries (in azw/mobi format) under "
-                                  "<b>%1/Dictionaries</b> and retry.")
-                              .arg(QDir::homePath()));
+    QMessageBox::critical(
+        nullptr, "No dictionary found",
+        QString("Please put your dictionaries (in azw/mobi format) under "
+                "<b>%1/Dictionaries</b> and retry.")
+            .arg(QDir::homePath()));
     return false;
   }
 
@@ -351,8 +352,15 @@ void MainWindow::showSettingsDialog()
   QString fontName = m_settings->value("viewer/fontName", "Consolas").toString();
   int fontSize     = m_settings->value("viewer/fontSize", 18).toInt();
 
-  m_ui->resultBrowser->document()->setDefaultStyleSheet(
-      QString("* {font-size: %1px; font-family:%2 }").arg(fontSize).arg(fontName));
+  if (fontName != m_fontName || fontSize != m_fontSize) {
+    m_fontName = fontName;
+    m_fontSize = fontSize;
+    m_ui->resultBrowser->document()->setDefaultStyleSheet(
+        QString("* {font-size: %1px; font-family:%2 }").arg(m_fontSize).arg(m_fontName));
+
+    // Reload the entry
+    searchItem(m_ui->matchesWidget->currentItem());
+  }
 }
 
 #ifdef AUTOTEST

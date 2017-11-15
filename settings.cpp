@@ -2,7 +2,8 @@
 
 #include "settings.h"
 
-Settings::Settings(QWidget* parent, QSettings* settings) : QDialog(parent), m_ui(new Ui::Settings)
+Settings::Settings(QWidget* parent, QSettings* settings)
+    : QDialog(parent), m_ui(new Ui::Settings)
 {
   m_ui->setupUi(this);
 
@@ -37,7 +38,7 @@ void Settings::saveSettings()
 {
   QString fontName     = m_ui->fontComboBox->currentFont().family();
   int pointSize        = m_ui->pointComboBox->currentText().toUInt(nullptr);
-  QString deviceSerial = m_ui->serialNumber->text().replace(" ","");
+  QString deviceSerial = m_ui->serialNumber->text().replace(" ", "");
 
   m_settings->setValue("viewer/fontName", fontName);
   m_settings->setValue("viewer/fontSize", pointSize);

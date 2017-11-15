@@ -42,6 +42,8 @@ class MainWindow : public QWidget {
   Completer* m_completer;
   QString m_deviceSerial;
   QString m_emojiFont;
+  QString m_fontName;
+  int m_fontSize;
 
   QFutureWatcher<MOBI_RET> m_watcher;
   QFuture<MOBI_RET> m_future;
