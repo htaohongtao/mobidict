@@ -67,7 +67,6 @@ add_executable(mobidict ${OS_BUNDLE} ${SOURCES} ${UI_HEADERS} ${RES_FILES})
 target_link_libraries(mobidict Qt5::Concurrent Qt5::Widgets ${TEST_LIB} ${ZLIB_LIBRARIES})
 
 if (WIN32)
-  include(CPack)
   include(DeployQt5)
 
   install(TARGETS mobidict RUNTIME DESTINATION .)
@@ -89,4 +88,5 @@ if (WIN32)
   set(CPACK_PACKAGE_VERSION_MAJOR "1")
   set(CPACK_PACKAGE_VERSION_MINOR "0")
   set(CPACK_GENERATOR NSIS)
+  include(CPack)
 endif()
