@@ -12,6 +12,9 @@ Settings::Settings(QWidget* parent, QSettings* settings)
   for (const auto& point : QFontDatabase::standardSizes())
     m_ui->pointComboBox->addItem(QString::number(point));
 
+  m_ui->serialNumber->setToolTip(
+      "For <b>your own</b> dictionaries with DRM, enter your reader device's serial "
+      "number here");
   connect(this, &QDialog::accepted, this, &Settings::saveSettings);
 }
 
