@@ -42,6 +42,7 @@ class MainWindow : public QWidget {
   Completer* m_completer;
   QString m_deviceSerial;
   QString m_emojiFont;
+  QString m_html;
   QString m_fontName;
   int m_fontSize;
 

@@ -28,6 +28,7 @@ MainWindow::MainWindow() : QWidget(), m_ui(new Ui::MainWindow())
   m_currentDict     = nullptr;
   m_currentDictName = QString::null;
   m_deviceSerial    = QString::null;
+  m_html            = QString::null;
 
 #ifdef AUTOTEST
   m_stopTesting = false;
@@ -251,18 +252,19 @@ void MainWindow::loadDictionary(const QString& text)
 void MainWindow::searchWord()
 {
   QString word = m_ui->searchLine->text();
-  QString html = m_currentDict->lookupWord(word);
+  m_html       = m_currentDict->lookupWord(word);
 
-  if (html.isNull())
-    html = QString(
-               "<br><br><center><font face='%1' size='+6'>🤔</font><br><br></span> The "
-               "word <b>\"%2\"</b> is not found in the dictionary.</center>")
-               .arg(m_emojiFont)
-               .arg(word);
+  if (m_html.isNull())
+    m_html =
+        QString(
+            "<br><br><center><font face='%1' size='+6'>🤔</font><br><br></span> The "
+            "word <b>\"%2\"</b> is not found in the dictionary.</center>")
+            .arg(m_emojiFont)
+            .arg(word);
   else
-    createResources(html);
+    createResources(m_html);
 
-  m_ui->resultBrowser->setHtml(html);
+  m_ui->resultBrowser->setHtml(m_html);
 }
 
 void MainWindow::searchItem(QListWidgetItem* item)
@@ -270,10 +272,10 @@ void MainWindow::searchItem(QListWidgetItem* item)
   if (!item)
     return;
 
-  QString html = m_currentDict->lookupWord(item->text());
-  createResources(html);
+  m_html = m_currentDict->lookupWord(item->text());
+  createResources(m_html);
 
-  m_ui->resultBrowser->setHtml(html);
+  m_ui->resultBrowser->setHtml(m_html);
 }
 
 void MainWindow::loadMatches(const QString& word)
@@ -338,8 +340,8 @@ void MainWindow::openLink(const QUrl& link)
 
   // TODO: Have to provide feedback for broken links
   if (!match.isEmpty()) {
-    QString html = m_currentDict->lookupWord(match);
-    m_ui->resultBrowser->setHtml(html);
+    m_html = m_currentDict->lookupWord(match);
+    m_ui->resultBrowser->setHtml(m_html);
   }
 }
 
@@ -360,7 +362,7 @@ void MainWindow::showSettingsDialog()
         QString("* {font-size: %1px; font-family:%2 }").arg(m_fontSize).arg(m_fontName));
 
     // Reload the entry
-    searchItem(m_ui->matchesWidget->currentItem());
+    m_ui->resultBrowser->setHtml(m_html);
   }
 }
 
