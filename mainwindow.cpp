@@ -14,7 +14,9 @@
 #define SELF_TEST
 #endif
 
+#include "completer.h"
 #include "mainwindow.h"
+#include "settings.h"
 
 MainWindow::MainWindow() : QWidget(), m_ui(new Ui::MainWindow())
 {
@@ -50,6 +52,7 @@ MainWindow::MainWindow() : QWidget(), m_ui(new Ui::MainWindow())
   m_emojiFont = "Apple Color Emoji";
 #endif
 
+  m_settingsDialog = new Settings(m_settings);
   m_ui->searchLine->installEventFilter(this);
 
   connect(m_ui->searchLine, &QLineEdit::returnPressed, this, &MainWindow::searchWord);
@@ -65,6 +68,8 @@ MainWindow::MainWindow() : QWidget(), m_ui(new Ui::MainWindow())
           &MainWindow::loadDictionary);
   connect(&m_watcher, &QFutureWatcher<bool>::finished, this,
           &MainWindow::dictionaryLoaded);
+  connect(m_ui->settingsButton, &QAbstractButton::clicked, this,
+          &MainWindow::showSettingsDialog);
 
   new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_L), m_ui->searchLine, SLOT(setFocus()));
 
@@ -130,7 +135,7 @@ void MainWindow::showEvent(QShowEvent* ev)
 
   QString deviceSerial = m_settings->value("viewer/deviceSerial", QString()).toString();
 
-  if (!deviceSerial.isEmpty() && (deviceSerial.length() == 16)) {
+  if (!deviceSerial.isEmpty()) {
     // qWarning() << "Device serial number:" << deviceSerial;
     m_deviceSerial = deviceSerial;
   }
@@ -331,6 +336,20 @@ void MainWindow::openLink(const QUrl& link)
     m_ui->matchesWidget->setCurrentItem(item);
     m_ui->matchesWidget->scrollToItem(item);
   }
+}
+
+void MainWindow::showSettingsDialog()
+{
+  m_settingsDialog->exec();
+
+  // Apply possible new values
+  m_deviceSerial = m_settings->value("viewer/deviceSerial", QString()).toString();
+
+  QString fontName = m_settings->value("viewer/fontName", "Consolas").toString();
+  int fontSize     = m_settings->value("viewer/fontSize", 18).toInt();
+
+  m_ui->resultBrowser->document()->setDefaultStyleSheet(
+      QString("* {font-size: %1px; font-family:%2 }").arg(fontSize).arg(fontName));
 }
 
 #ifdef AUTOTEST

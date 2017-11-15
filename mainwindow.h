@@ -5,9 +5,11 @@
 #include <QSettings>
 #include <QWidget>
 
-#include "completer.h"
 #include "mobidict.h"
 #include "ui_mainwindow.h"
+
+class Completer;
+class Settings;
 
 class MainWindow : public QWidget {
   Q_OBJECT
@@ -25,6 +27,7 @@ class MainWindow : public QWidget {
   void dictionaryLoaded();
   void loadDictionary(const QString&);
   void openLink(const QUrl& link);
+  void showSettingsDialog();
 
  protected:
   bool eventFilter(QObject* obj, QEvent* ev) override;
@@ -43,6 +46,7 @@ class MainWindow : public QWidget {
   QFutureWatcher<MOBI_RET> m_watcher;
   QFuture<MOBI_RET> m_future;
 
+  Settings* m_settingsDialog;
   QSettings* m_settings;
 
   void createResources(const QString&);
