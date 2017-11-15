@@ -52,7 +52,7 @@ MainWindow::MainWindow() : QWidget(), m_ui(new Ui::MainWindow())
   m_emojiFont = "Apple Color Emoji";
 #endif
 
-  m_settingsDialog = new Settings(m_settings);
+  m_settingsDialog = new Settings(this, m_settings);
   m_ui->searchLine->installEventFilter(this);
 
   connect(m_ui->searchLine, &QLineEdit::returnPressed, this, &MainWindow::searchWord);

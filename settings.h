@@ -11,7 +11,7 @@ class Settings : public QDialog {
   Q_OBJECT
 
  public:
-  Settings(QSettings*);
+  Settings(QWidget* parent, QSettings*);
   ~Settings();
 
  public slots:

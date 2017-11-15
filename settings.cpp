@@ -2,7 +2,7 @@
 
 #include "settings.h"
 
-Settings::Settings(QSettings* settings) : QDialog(), m_ui(new Ui::Settings)
+Settings::Settings(QWidget* parent, QSettings* settings) : QDialog(parent), m_ui(new Ui::Settings)
 {
   m_ui->setupUi(this);
 
