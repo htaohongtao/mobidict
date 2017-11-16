@@ -26,7 +26,6 @@ before_install:
     brew update > /dev/null;
     brew install ninja;
     brew install qt5;
-    brew install tree;
     export PATH=/usr/local/opt/qt/bin:$PATH;
   fi
 script:
@@ -37,6 +36,5 @@ script:
 - ninja || exit 1
 - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
     cpack -V -G DragNDrop
-    ls
-    tree mobidict.app;
+    mkdir dist; mv *.dmg dist
   fi
