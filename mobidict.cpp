@@ -5,6 +5,8 @@
 
 #include "mobidict.h"
 
+#define BROKEN_ENTRY_SEARCH_LENGTH 8192
+
 MobiDict::MobiDict(const QString &path, const QString &serial) : QObject()
 {
   m_mobiData     = nullptr;
@@ -159,7 +161,7 @@ MOBI_RET MobiDict::open()
     // So textlengths are not set then maybe we can find entries divided by <hr .*/> tags
     // Yes, this is a gross hack.
     if (entry_textlen == 0) {
-      for (int j = 0; j < 1024; ++j) {
+      for (int j = 0; j < BROKEN_ENTRY_SEARCH_LENGTH; ++j) {
         if (!strncmp(reinterpret_cast<const char *>(m_rawMarkup->flow->data +
                                                     entry_startpos + j),
                      "<hr ", 4)) {
