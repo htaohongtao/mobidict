@@ -76,8 +76,10 @@ elseif (WIN32)
 
   get_property(QT_GIF_PLUGIN TARGET Qt5::QGifPlugin PROPERTY LOCATION_RELEASE)
   get_property(QT_JPEG_PLUGIN TARGET Qt5::QJpegPlugin PROPERTY LOCATION_RELEASE)
+  get_property(QT_ICO_PLUGIN TARGET Qt5::QIcoPlugin PROPERTY LOCATION_RELEASE)
+  get_property(QT_SVG_PLUGIN TARGET Qt5::QSvgPlugin PROPERTY LOCATION_RELEASE)
 
-  install_qt5_executable("mobidict.exe" "${QT_GIF_PLUGIN};${QT_JPEG_PLUGIN}" "" "" "plugins" TRUE)
+  install_qt5_executable("mobidict.exe" "${QT_GIF_PLUGIN};${QT_JPEG_PLUGIN};${QT_SVG_PLUGIN};${QT_ICO_PLUGIN}" "" "" "plugins" TRUE)
 
   set(CPACK_GENERATOR NSIS)
   set(CPACK_NSIS_DISPLAY_NAME "Mobidict")
