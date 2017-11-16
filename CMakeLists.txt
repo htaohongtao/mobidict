@@ -82,6 +82,12 @@ elseif (APPLE OR WIN32)
   get_property(QT_JPEG_PLUGIN TARGET Qt5::QJpegPlugin PROPERTY LOCATION_RELEASE)
   get_property(QT_SVG_PLUGIN TARGET Qt5::QSvgPlugin PROPERTY LOCATION_RELEASE)
 
+  if (WIN32)
+    install(TARGETS mobidict RUNTIME DESTINATION .)
+  elseif (APPLE)
+    install(TARGETS mobidict BUNDLE DESTINATION .)
+  endif()
+
   install_qt5_executable(${BUNDLE_NAME} "${QT_GIF_PLUGIN};${QT_JPEG_PLUGIN};${QT_SVG_PLUGIN}" "" "" "plugins" TRUE)
 
   set(CPACK_PACKAGE_VERSION "1.0")
@@ -96,7 +102,6 @@ elseif (APPLE OR WIN32)
 	  set(CPACK_PACKAGING_INSTALL_PREFIX "/${CPACK_PACKAGE_NAME}")
 	  set(CPACK_BUNDLE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/res/app.icns")
   elseif (WIN32)
-    install(TARGETS mobidict RUNTIME DESTINATION .)
     set(CPACK_GENERATOR NSIS)
     set(CPACK_NSIS_DISPLAY_NAME "Mobidict")
     set(CPACK_NSIS_CREATE_ICONS_EXTRA
