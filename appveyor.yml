@@ -1,4 +1,4 @@
-version: '{build}'
+version: '1.1-beta{build}'
 
 image: Visual Studio 2017
 
@@ -65,4 +65,4 @@ build_script:
 
     set PATH=C:\Program Files (x86)\NSIS\bin%PATH%
 
-    cpack -V -G NSIS
+    cpack -V
