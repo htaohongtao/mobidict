@@ -35,8 +35,7 @@ script:
 - cmake -G Ninja ..
 - ninja || exit 1
 - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-    /usr/local/opt/qt/bin/macdeployqt mobidict.app;
+    cpack -V -G DragNDrop
+    ls
     tree mobidict.app;
-    hdiutil create mobidict-1.0.dmg -volname "Mobidict" -fs HFS+ -srcfolder "mobidict.app";
-    mkdir dist; mv mobidict-1.0.dmg dist;
   fi
