@@ -35,6 +35,6 @@ script:
 - cmake -G Ninja ..
 - ninja || exit 1
 - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-    cpack -V -G DragNDrop
-    mkdir dist; mv *.dmg dist
+    cpack -V -G DragNDrop;
+    mkdir dist; mv *.dmg dist;
   fi
