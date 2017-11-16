@@ -129,40 +129,42 @@ void MainWindow::closeEvent(QCloseEvent* ev)
 
 void MainWindow::showEvent(QShowEvent* ev)
 {
-  QRect rect = m_settings->value("mainwindow/geometry", QRect()).toRect();
-  QByteArray splitterSizes =
-      m_settings->value("mainwindow/splitterSizes", QByteArray()).toByteArray();
+  if (!ev->spontaneous()) {
+    QRect rect = m_settings->value("mainwindow/geometry", QRect()).toRect();
+    QByteArray splitterSizes =
+        m_settings->value("mainwindow/splitterSizes", QByteArray()).toByteArray();
 
-  QString lastDictionary =
-      m_settings->value("viewer/lastDictionary", QString()).toString();
+    QString lastDictionary =
+        m_settings->value("viewer/lastDictionary", QString()).toString();
 
-  m_fontName = m_settings->value("viewer/fontName", "Consolas").toString();
-  m_fontSize = m_settings->value("viewer/fontSize", 18).toInt();
+    m_fontName = m_settings->value("viewer/fontName", "Consolas").toString();
+    m_fontSize = m_settings->value("viewer/fontSize", 18).toInt();
 
-  QString deviceSerial = m_settings->value("viewer/deviceSerial", QString()).toString();
+    QString deviceSerial = m_settings->value("viewer/deviceSerial", QString()).toString();
 
-  if (!deviceSerial.isEmpty()) {
-    // qWarning() << "Device serial number:" << deviceSerial;
-    m_deviceSerial = deviceSerial;
+    if (!deviceSerial.isEmpty()) {
+      // qWarning() << "Device serial number:" << deviceSerial;
+      m_deviceSerial = deviceSerial;
+    }
+
+    m_ui->resultBrowser->document()->setDefaultStyleSheet(
+        QString("* {font-size: %1px; font-family:%2 }").arg(m_fontSize).arg(m_fontName));
+
+    if (!rect.isEmpty())
+      setGeometry(rect);
+    else {
+      setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(),
+                                      qApp->desktop()->availableGeometry()));
+    }
+
+    if (!splitterSizes.isEmpty())
+      m_ui->splitter->restoreState(splitterSizes);
+
+    if (!lastDictionary.isNull())
+      loadDictionary(lastDictionary);
+    else
+      loadDictionary(m_ui->dictComboBox->currentText());
   }
-
-  m_ui->resultBrowser->document()->setDefaultStyleSheet(
-      QString("* {font-size: %1px; font-family:%2 }").arg(m_fontSize).arg(m_fontName));
-
-  if (!rect.isEmpty())
-    setGeometry(rect);
-  else {
-    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(),
-                                    qApp->desktop()->availableGeometry()));
-  }
-
-  if (!splitterSizes.isEmpty())
-    m_ui->splitter->restoreState(splitterSizes);
-
-  if (!lastDictionary.isNull())
-    loadDictionary(lastDictionary);
-  else
-    loadDictionary(m_ui->dictComboBox->currentText());
 
   QWidget::showEvent(ev);
 }
