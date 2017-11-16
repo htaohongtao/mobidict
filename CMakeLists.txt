@@ -110,6 +110,7 @@ elseif (APPLE OR WIN32)
       "CreateShortCut '$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\MobiDict.lnk' '$INSTDIR\\\\mobidict.exe'")
     set(CPACK_NSIS_DELETE_ICONS_EXTRA
       "Delete '$SMPROGRAMS\\\\$START_MENU\\\\MobiDict.lnk'")
+    set(CPACK_NSIS_DEFINES "ManifestDPIAware true")
     set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
     set(CPACK_NSIS_MUI_ICON "${CMAKE_CURRENT_SOURCE_DIR}/res/app.ico")
     set(CPACK_NSIS_INSTALLED_ICON_NAME "mobidict.exe")
