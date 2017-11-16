@@ -343,6 +343,7 @@ void MainWindow::openLink(const QUrl& link)
   // TODO: Have to provide feedback for broken links
   if (!match.isEmpty()) {
     m_html = m_currentDict->lookupWord(match);
+    createResources(m_html);
     m_ui->resultBrowser->setHtml(m_html);
   }
 }
