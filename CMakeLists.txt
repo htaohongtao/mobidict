@@ -65,7 +65,11 @@ endif()
 add_executable(mobidict ${OS_BUNDLE} ${SOURCES} ${UI_HEADERS} ${RES_FILES})
 target_link_libraries(mobidict Qt5::Concurrent Qt5::Widgets ${TEST_LIB} ${ZLIB_LIBRARIES})
 
-if (WIN32)
+if (UNIX)
+    install(TARGETS mobidict RUNTIME DESTINATION bin)
+    install(FILES res/mobidict.desktop DESTINATION share/applications)
+    install(FILES res/mobidict.png DESTINATION share/pixmaps)
+elseif (WIN32)
   include(DeployQt5)
 
   install(TARGETS mobidict RUNTIME DESTINATION .)

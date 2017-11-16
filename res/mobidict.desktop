@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Mobidict
+GenericName=Mobidict
+Comment=Check word definitions and spellings in azw/mobi dictionaries
+MimeType=application/vnd.amazon.ebook;application/x-mobipocket-ebook
+Exec=mobidict
+Icon=mobidict
+Type=Application
+Terminal=false
+Categories=Office;Dictionary;
+Keywords=word;synonym;definition;spelling;
+StartupNotify=true
