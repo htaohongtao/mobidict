@@ -69,6 +69,8 @@ QString MobiDict::lookupWord(const QString &word)
     // so that Qt can give us a url in QTextBrowser::loadResource()
     result = result.replace("filepos=", "href=");
     result = result.replace("hirecindex=", "src=");
+    result = result.replace("lowrecindex=", "src=");
+    result = result.replace("recindex=", "src=");
 
     // qDebug() << "HTML entry:";
     // qDebug() << result;
