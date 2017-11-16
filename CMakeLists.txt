@@ -14,7 +14,7 @@ if (UNIX)
 endif()
 option(AUTOTEST "Enable Automatic testing" OFF)
 
-find_package(Qt5 COMPONENTS Concurrent Widgets Test REQUIRED)
+find_package(Qt5 COMPONENTS Concurrent Svg Widgets Test REQUIRED)
 if (NOT WIN32)
   find_package(ZLIB)
 endif()
@@ -63,7 +63,7 @@ if (AUTOTEST)
 endif()
 
 add_executable(mobidict ${OS_BUNDLE} ${SOURCES} ${UI_HEADERS} ${RES_FILES})
-target_link_libraries(mobidict Qt5::Concurrent Qt5::Widgets ${TEST_LIB} ${ZLIB_LIBRARIES})
+target_link_libraries(mobidict Qt5::Concurrent Qt5::Svg Qt5::Widgets ${TEST_LIB} ${ZLIB_LIBRARIES})
 
 if (UNIX)
     install(TARGETS mobidict RUNTIME DESTINATION bin)
@@ -76,10 +76,9 @@ elseif (WIN32)
 
   get_property(QT_GIF_PLUGIN TARGET Qt5::QGifPlugin PROPERTY LOCATION_RELEASE)
   get_property(QT_JPEG_PLUGIN TARGET Qt5::QJpegPlugin PROPERTY LOCATION_RELEASE)
-  get_property(QT_ICO_PLUGIN TARGET Qt5::QICOPlugin PROPERTY LOCATION_RELEASE)
   get_property(QT_SVG_PLUGIN TARGET Qt5::QSvgPlugin PROPERTY LOCATION_RELEASE)
 
-  install_qt5_executable("mobidict.exe" "${QT_GIF_PLUGIN};${QT_JPEG_PLUGIN};${QT_SVG_PLUGIN};${QT_ICO_PLUGIN}" "" "" "plugins" TRUE)
+  install_qt5_executable("mobidict.exe" "${QT_GIF_PLUGIN};${QT_JPEG_PLUGIN};${QT_SVG_PLUGIN}" "" "" "plugins" TRUE)
 
   set(CPACK_GENERATOR NSIS)
   set(CPACK_NSIS_DISPLAY_NAME "Mobidict")
