@@ -64,7 +64,7 @@ if (ASAN)
 endif()
 
 if (AUTOTEST)
-  find_package(Qt5 COMPONENTS Test)
+  find_package(Qt5 COMPONENTS Test REQUIRED)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DAUTOTEST")
   set(TEST_LIB "Qt5::Test")
 endif()
