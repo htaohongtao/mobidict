@@ -105,7 +105,7 @@ MainWindow::~MainWindow()
 bool MainWindow::eventFilter(QObject* obj, QEvent* event)
 {
   if (event->type() == QEvent::KeyPress) {
-    QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+    const QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
     if (obj == m_ui->searchLine) {
       if (keyEvent->key() == Qt::Key_Down) {
         m_ui->matchesWidget->setFocus();

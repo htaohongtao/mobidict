@@ -15,6 +15,7 @@ MobiDict::MobiDict(const QString &path, const QString &serial) : QObject()
   m_title        = QString::null;
   m_codec        = nullptr;
   m_deviceSerial = serial;
+  m_isCP1252     = false;
 }
 
 MobiDict::~MobiDict()
@@ -28,7 +29,7 @@ MobiDict::~MobiDict()
 
 QString MobiDict::resolveLink(const QString &link)
 {
-  uint32_t offset = link.toUInt();
+  const uint32_t offset = link.toUInt();
   QString match   = QString::null;
 
   for (const auto &entry : m_wordMap.keys()) {
@@ -50,10 +51,12 @@ QString MobiDict::lookupWord(const QString &word)
 
   QString result;
 
+  uint32_t entry_startpos = 0;
+  uint32_t entry_textlen  = 0;
   for (const auto &mobiEntry : m_wordMap[word]) {
-    MobiEntry *m            = mobiEntry;
-    uint32_t entry_startpos = m->startPos;
-    uint32_t entry_textlen  = m->textLength;
+    MobiEntry *m   = mobiEntry;
+    entry_startpos = m->startPos;
+    entry_textlen  = m->textLength;
 
     char *entry = new char[entry_textlen + 1];
     memcpy(entry, m_rawMarkup->flow->data + entry_startpos, entry_textlen);
@@ -144,10 +147,10 @@ MOBI_RET MobiDict::open()
   if (mobi_ret != MOBI_SUCCESS)
     return mobi_ret;
 
-  uint32_t entry_startpos;
-  uint32_t entry_textlen = 0;
+  uint32_t entry_startpos = 0;
+  uint32_t entry_textlen  = 0;
 
-  size_t count = m_rawMarkup->orth->total_entries_count;
+  const size_t count = m_rawMarkup->orth->total_entries_count;
 
 #ifndef NDEBUG
   QStringList multiples;
