@@ -10,9 +10,7 @@ Completer::Completer(const QList<QString>& words) : Completer()
   m_wordList = words;
 }
 
-Completer::~Completer()
-{
-}
+Completer::~Completer() {}
 
 void Completer::setWordList(const QList<QString>& wordList)
 {
