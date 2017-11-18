@@ -1,5 +1,6 @@
 #include <QtConcurrent/qtconcurrentrun.h>
 #include <QApplication>
+#include <QClipboard>
 #include <QDesktopWidget>
 #include <QFileDialog>
 #include <QKeyEvent>
@@ -61,6 +62,8 @@ MainWindow::MainWindow() : QWidget(), m_ui(new Ui::MainWindow())
   connect(m_ui->matchesWidget, &QListWidget::itemActivated, this,
           &MainWindow::searchItem);
   connect(m_ui->matchesWidget, &QListWidget::itemClicked, this, &MainWindow::searchItem);
+  connect(m_ui->matchesWidget, &QListWidget::itemDoubleClicked, this,
+          &MainWindow::copyWordToClipboard);
   connect(m_ui->matchesWidget, &QListWidget::currentItemChanged, this,
           &MainWindow::searchItem);
   connect(m_ui->resultBrowser, &QTextBrowser::anchorClicked, this, &MainWindow::openLink);
@@ -367,6 +370,11 @@ void MainWindow::showSettingsDialog()
     // Reload the entry
     m_ui->resultBrowser->setHtml(m_html);
   }
+}
+
+void MainWindow::copyWordToClipboard(QListWidgetItem* item)
+{
+  QApplication::clipboard()->setText(item->text());
 }
 
 #ifdef AUTOTEST

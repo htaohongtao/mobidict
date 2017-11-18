@@ -28,6 +28,7 @@ class MainWindow : public QWidget {
   void loadDictionary(const QString&);
   void openLink(const QUrl& link);
   void showSettingsDialog();
+  void copyWordToClipboard(QListWidgetItem*);
 
  protected:
   bool eventFilter(QObject* obj, QEvent* ev) override;
