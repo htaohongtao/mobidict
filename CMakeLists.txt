@@ -32,7 +32,7 @@ set(SOURCES completer.cpp htmlbrowser.cpp main.cpp mainwindow.cpp settings.cpp
 
 qt5_wrap_ui(UI_HEADERS mainwindow.ui settings.ui)
 
-include_directories("libmobi/src")
+include_directories(BEFORE "libmobi/src" ${ZLIB_INCLUDE_DIRS})
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DUSE_ENCRYPTION")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUSE_ENCRYPTION")
