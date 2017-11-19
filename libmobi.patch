@@ -96,6 +96,20 @@ index d9ba0d3..668364f 100644
  MOBI_RET mobi_cp1252_to_utf8(char *output, const char *input, size_t *outsize, const size_t insize);
  MOBI_RET mobi_utf8_to_cp1252(char *output, const char *input, size_t *outsize, const size_t insize);
  uint8_t mobi_ligature_to_cp1252(const uint8_t c1, const uint8_t c2);
+diff --git a/tools/common.c b/tools/common.c
+index c9a4ae5..c87a58c 100644
+--- a/tools/common.c
++++ b/tools/common.c
+@@ -16,6 +16,9 @@
+ #include <ctype.h>
+ #include <string.h>
+ #include <errno.h>
++#ifdef _WIN32
++#include <direct.h> // For _mkdir
++#endif
+ #include <mobi.h>
+ #include "common.h"
+ 
 diff --git a/tools/common.h b/tools/common.h
 index 6022d22..9d0701a 100644
 --- a/tools/common.h
