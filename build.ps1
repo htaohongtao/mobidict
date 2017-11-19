@@ -16,7 +16,7 @@ vs amd64
 $env:Path += ";C:/Qt/Qt5.9.2/5.9.2/msvc2017_64/bin"
 
 cmake  -GNinja `
-       -DCMAKE_BUILD_TYPE=Release `
+       -DCMAKE_BUILD_TYPE=RelWithDebInfo `
        -DCMAKE_C_COMPILER=clang-cl `
        -DCMAKE_CXX_COMPILER=clang-cl `
        -DVCPKG_TARGET_TRIPLET=x64-windows-static `
