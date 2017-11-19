@@ -23,12 +23,14 @@ option(AUTOTEST "Enable Automatic testing" OFF)
 find_package(Qt5 COMPONENTS Concurrent Svg Widgets REQUIRED)
 find_package(ZLIB REQUIRED)
 
+set(LIBMOBI_SRCS libmobi/src/buffer.c libmobi/src/compression.c
+                 libmobi/src/encryption.c libmobi/src/index.c libmobi/src/memory.c
+                 libmobi/src/meta.c libmobi/src/parse_rawml.c libmobi/src/sha1.c
+                 libmobi/src/read.c libmobi/src/structure.c libmobi/tools/common.c
+                 libmobi/src/util.c)
+
 set(SOURCES completer.cpp htmlbrowser.cpp main.cpp mainwindow.cpp settings.cpp
-            mobidict.cpp resources.qrc libmobi/src/buffer.c libmobi/src/compression.c
-            libmobi/src/encryption.c libmobi/src/index.c libmobi/src/memory.c
-            libmobi/src/meta.c libmobi/src/parse_rawml.c libmobi/src/sha1.c
-            libmobi/src/read.c libmobi/src/structure.c libmobi/tools/common.c
-            libmobi/src/util.c)
+            mobidict.cpp resources.qrc ${LIBMOBI_SRCS})
 
 qt5_wrap_ui(UI_HEADERS mainwindow.ui settings.ui)
 
