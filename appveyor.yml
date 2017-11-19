@@ -27,6 +27,8 @@ install:
 
     set PATH=C:\projects\deps\patch\bin;%PATH%
 
+    vcpkg install zlib:x64-windows-static
+
     patch --version
 
     ninja --version
@@ -59,7 +61,7 @@ build_script:
 
     set PATH=C:\Qt\5.9\msvc2017_64\bin;%PATH%
 
-    cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+    cmake -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DVCPKG_TARGET_TRIPLET=x64-windows-static -DCMAKE_TOOLCHAIN_FILE=C:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake ..
 
     ninja
 

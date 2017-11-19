@@ -21,9 +21,7 @@ endif()
 option(AUTOTEST "Enable Automatic testing" OFF)
 
 find_package(Qt5 COMPONENTS Concurrent Svg Widgets REQUIRED)
-if (NOT WIN32)
-  find_package(ZLIB)
-endif()
+find_package(ZLIB REQUIRED)
 
 set(SOURCES completer.cpp htmlbrowser.cpp main.cpp mainwindow.cpp settings.cpp
             mobidict.cpp resources.qrc libmobi/src/buffer.c libmobi/src/compression.c
@@ -45,9 +43,8 @@ if (APPLE)
   set_source_files_properties("res/app.icns" PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 elseif (WIN32)
   ENABLE_LANGUAGE(RC)
-  list(APPEND SOURCES libmobi/src/miniz.c)
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /D_CRT_SECURE_NO_WARNINGS /DUSE_MINIZ")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /DUSE_MINIZ /std:c++latest")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /D_CRT_SECURE_NO_WARNINGS")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest")
   set(OS_BUNDLE WIN32)
   set(RES_FILES "mobidict.rc")
 endif()
