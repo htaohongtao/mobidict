@@ -2,9 +2,24 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Configure & Build",
+            "label": "Configure & Build (Powershell)",
             "type": "shell",
             "command": "${workspaceRoot}/build.ps1",
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "Configure & Build (Shell)",
+            "type": "shell",
+            "command": "${workspaceRoot}/build.sh",
             "options": {
                 "cwd": "${workspaceRoot}"
             },
@@ -34,6 +49,6 @@
                 "$msCompile"
             ]
         }
- 
+
     ]
 }

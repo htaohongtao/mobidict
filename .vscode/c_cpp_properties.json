@@ -14,6 +14,21 @@
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
             }
+        },
+        {
+            "name": "linux",
+            "intelliSenseMode": "clang-x64",
+            "includePath": [
+                "${workspaceRoot}"
+            ],
+            "compileCommands": "${workspaceRoot}/build/compile_commands.json",
+            "browse": {
+                "path": [
+                    "${workspaceRoot}"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
         }
     ],
     "version": 3
