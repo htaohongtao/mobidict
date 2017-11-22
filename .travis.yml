@@ -31,7 +31,6 @@ before_install:
   fi
 script:
 - mkdir build
-- cd libmobi ; patch -p1 < ../libmobi.patch; patch -p1 < ../update-enc-length.patch; cd ..
 - cd build
 - cmake -G Ninja ..
 - ninja || exit 1
