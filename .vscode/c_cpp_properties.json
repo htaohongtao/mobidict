@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "win-x64",
+            "name": "Windows",
             "intelliSenseMode": "msvc-x64",
             "includePath": [
                 "${workspaceRoot}"
@@ -16,7 +16,7 @@
             }
         },
         {
-            "name": "linux",
+            "name": "Linux",
             "intelliSenseMode": "clang-x64",
             "includePath": [
                 "${workspaceRoot}"
