@@ -1,0 +1,4 @@
+[submodule "libmobi"]
+	path = libmobi
+	url = https://github.com/ismail/libmobi.git
+	branch = mobidict
