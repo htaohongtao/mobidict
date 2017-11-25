@@ -70,7 +70,7 @@ QString MobiDict::lookupWord(const QString &word)
     delete[] entry;
     entry = nullptr;
 
-    // Change filepos -> href, hirecindex -> src
+    // Change filepos -> href, {hi,low}recindex -> src
     // so that Qt can give us a url in QTextBrowser::loadResource()
     result = result.replace("filepos=", "href=");
     result = result.replace("hirecindex=", "src=");
@@ -80,6 +80,9 @@ QString MobiDict::lookupWord(const QString &word)
     // qDebug() << "HTML entry:";
     // qDebug() << result;
   }
+
+  // Force rich-text detection
+  result.prepend("<qt>");
 
   return result;
 }
