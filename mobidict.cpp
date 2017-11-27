@@ -50,25 +50,23 @@ QString MobiDict::lookupWord(const QString &word)
     return QString::null;
 
   QString result;
+  std::string html;
 
   uint32_t entry_startpos = 0;
   uint32_t entry_textlen  = 0;
+
   for (const auto &mobiEntry : m_wordMap[word]) {
     MobiEntry *m   = mobiEntry;
     entry_startpos = m->startPos;
     entry_textlen  = m->textLength;
 
-    char *entry = new char[entry_textlen + 1];
-    memcpy(entry, m_rawMarkup->flow->data + entry_startpos, entry_textlen);
-    entry[entry_textlen] = '\0';
+    html.assign(m_rawMarkup->flow->data + entry_startpos,
+                m_rawMarkup->flow->data + entry_startpos + entry_textlen);
 
     if (m_isCP1252)
-      result.append(m_codec->toUnicode(entry));
+      result.append(m_codec->toUnicode(html.c_str()));
     else
-      result.append(QString::fromUtf8(entry));
-
-    delete[] entry;
-    entry = nullptr;
+      result.append(QString::fromUtf8(html.c_str()));
 
     // Change filepos -> href, {hi,low}recindex -> src
     // so that Qt can give us a url in QTextBrowser::loadResource()
