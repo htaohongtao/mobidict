@@ -5,6 +5,9 @@ image: Visual Studio 2017
 build:
      verbosity: detailed
 
+cache:
+    c:\tools\vcpkg\installed\
+
 install:
 - cmd: >-
     mkdir C:\projects\deps
