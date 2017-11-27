@@ -29,6 +29,9 @@ before_install:
     brew install qt5;
     export PATH=/usr/local/opt/qt/bin:$PATH;
   fi
+cache:
+  directories:
+    - $HOME/Library/Caches/Homebrew
 script:
 - mkdir build
 - cd build
