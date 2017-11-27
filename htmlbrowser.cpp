@@ -2,7 +2,9 @@
 
 #include "htmlbrowser.h"
 
-HtmlBrowser::HtmlBrowser(QWidget* parent) : QTextBrowser(parent) {}
+HtmlBrowser::HtmlBrowser(QWidget* parent) : QTextBrowser(parent)
+{
+}
 
 HtmlBrowser::~HtmlBrowser()
 {

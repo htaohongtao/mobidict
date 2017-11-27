@@ -30,7 +30,7 @@ MobiDict::~MobiDict()
 QString MobiDict::resolveLink(const QString &link)
 {
   const uint32_t offset = link.toUInt();
-  QString match   = QString::null;
+  QString match         = QString::null;
 
   for (const auto &entry : m_wordMap.keys()) {
     for (const auto &mobiEntry : m_wordMap[entry]) {
