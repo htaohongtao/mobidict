@@ -13,7 +13,8 @@ Settings::Settings(QWidget* parent, QSettings* settings)
     m_ui->pointComboBox->addItem(QString::number(point));
 
   m_ui->serialNumber->setToolTip(
-      "For <b>your own</b> dictionaries with DRM, enter your reader device's serial "
+      "For <b>your own</b> dictionaries with DRM, enter your reader device's "
+      "serial "
       "number here");
   connect(this, &QDialog::accepted, this, &Settings::saveSettings);
 }
@@ -26,9 +27,11 @@ Settings::~Settings()
 
 void Settings::showEvent(QShowEvent* ev)
 {
-  QString fontName     = m_settings->value("viewer/fontName", "Consolas").toString();
-  int fontSize         = m_settings->value("viewer/fontSize", 18).toInt();
-  QString deviceSerial = m_settings->value("viewer/deviceSerial", QString()).toString();
+  QString fontName =
+      m_settings->value("viewer/fontName", "Consolas").toString();
+  int fontSize = m_settings->value("viewer/fontSize", 18).toInt();
+  QString deviceSerial =
+      m_settings->value("viewer/deviceSerial", QString()).toString();
 
   m_ui->fontComboBox->setCurrentFont(QFont(fontName, fontSize));
   m_ui->serialNumber->setText(deviceSerial);

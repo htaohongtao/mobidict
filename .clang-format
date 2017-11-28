@@ -9,7 +9,8 @@ AllowShortIfStatementsOnASingleLine: 'false'
 AllowShortLoopsOnASingleLine: 'false'
 AlwaysBreakTemplateDeclarations: 'true'
 BreakBeforeBraces: Stroustrup
-ColumnLimit: 90
+ColumnLimit: 80
 Cpp11BracedListStyle: 'true'
+ReflowComments: 'false'
 Standard: Cpp11
 UseTab: Never

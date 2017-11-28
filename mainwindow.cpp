@@ -57,25 +57,30 @@ MainWindow::MainWindow() : QWidget(), m_ui(new Ui::MainWindow())
   m_settingsDialog = new Settings(this, m_settings);
   m_ui->searchLine->installEventFilter(this);
 
-  connect(m_ui->searchLine, &QLineEdit::returnPressed, this, &MainWindow::searchWord);
-  connect(m_ui->searchLine, &QLineEdit::textChanged, this, &MainWindow::loadMatches);
+  connect(m_ui->searchLine, &QLineEdit::returnPressed, this,
+          &MainWindow::searchWord);
+  connect(m_ui->searchLine, &QLineEdit::textChanged, this,
+          &MainWindow::loadMatches);
   connect(m_ui->matchesWidget, &QListWidget::itemActivated, this,
           &MainWindow::searchItem);
-  connect(m_ui->matchesWidget, &QListWidget::itemClicked, this, &MainWindow::searchItem);
+  connect(m_ui->matchesWidget, &QListWidget::itemClicked, this,
+          &MainWindow::searchItem);
   connect(m_ui->matchesWidget, &QListWidget::itemDoubleClicked, this,
           &MainWindow::copyWordToClipboard);
   connect(m_ui->matchesWidget, &QListWidget::currentItemChanged, this,
           &MainWindow::searchItem);
-  connect(m_ui->resultBrowser, &QTextBrowser::anchorClicked, this, &MainWindow::openLink);
-  connect(m_ui->dictComboBox,
-          static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::activated), this,
-          &MainWindow::loadDictionary);
+  connect(m_ui->resultBrowser, &QTextBrowser::anchorClicked, this,
+          &MainWindow::openLink);
+  connect(m_ui->dictComboBox, static_cast<void (QComboBox::*)(const QString&)>(
+                                  &QComboBox::activated),
+          this, &MainWindow::loadDictionary);
   connect(&m_watcher, &QFutureWatcher<bool>::finished, this,
           &MainWindow::dictionaryLoaded);
   connect(m_ui->settingsButton, &QAbstractButton::clicked, this,
           &MainWindow::showSettingsDialog);
 
-  new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_L), m_ui->searchLine, SLOT(setFocus()));
+  new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_L), m_ui->searchLine,
+                SLOT(setFocus()));
   new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_M), m_ui->matchesWidget,
                 SLOT(setFocus()));
 
@@ -125,7 +130,8 @@ void MainWindow::closeEvent(QCloseEvent* ev)
 {
   m_settings->setValue("mainwindow/geometry", geometry());
   m_settings->setValue("mainwindow/splitterSizes", m_ui->splitter->saveState());
-  m_settings->setValue("viewer/lastDictionary", m_ui->dictComboBox->currentText());
+  m_settings->setValue("viewer/lastDictionary",
+                       m_ui->dictComboBox->currentText());
 
   QWidget::closeEvent(ev);
 }
@@ -135,7 +141,8 @@ void MainWindow::showEvent(QShowEvent* ev)
   if (!ev->spontaneous()) {
     QRect rect = m_settings->value("mainwindow/geometry", QRect()).toRect();
     QByteArray splitterSizes =
-        m_settings->value("mainwindow/splitterSizes", QByteArray()).toByteArray();
+        m_settings->value("mainwindow/splitterSizes", QByteArray())
+            .toByteArray();
 
     QString lastDictionary =
         m_settings->value("viewer/lastDictionary", QString()).toString();
@@ -143,7 +150,8 @@ void MainWindow::showEvent(QShowEvent* ev)
     m_fontName = m_settings->value("viewer/fontName", "Consolas").toString();
     m_fontSize = m_settings->value("viewer/fontSize", 18).toInt();
 
-    QString deviceSerial = m_settings->value("viewer/deviceSerial", QString()).toString();
+    QString deviceSerial =
+        m_settings->value("viewer/deviceSerial", QString()).toString();
 
     if (!deviceSerial.isEmpty()) {
       // qWarning() << "Device serial number:" << deviceSerial;
@@ -151,7 +159,9 @@ void MainWindow::showEvent(QShowEvent* ev)
     }
 
     m_ui->resultBrowser->document()->setDefaultStyleSheet(
-        QString("* {font-size: %1px; font-family:%2 }").arg(m_fontSize).arg(m_fontName));
+        QString("* {font-size: %1px; font-family:%2 }")
+            .arg(m_fontSize)
+            .arg(m_fontName));
 
     if (!rect.isEmpty())
       setGeometry(rect);
@@ -241,7 +251,8 @@ void MainWindow::loadDictionary(const QString& text)
 
   m_currentDictName = text;
   m_currentDict     = new MobiDict(
-      QString("%1/Dictionaries/%2").arg(QDir::homePath()).arg(text), m_deviceSerial);
+      QString("%1/Dictionaries/%2").arg(QDir::homePath()).arg(text),
+      m_deviceSerial);
   m_future = QtConcurrent::run(m_currentDict, &MobiDict::open);
   m_watcher.setFuture(m_future);
 
@@ -260,12 +271,12 @@ void MainWindow::searchWord()
   m_html       = m_currentDict->lookupWord(word);
 
   if (m_html.isNull())
-    m_html =
-        QString(
-            "<br><br><center><font face='%1' size='+6'>🤔</font><br><br></span> The "
-            "word <b>\"%2\"</b> is not found in the dictionary.</center>")
-            .arg(m_emojiFont)
-            .arg(word);
+    m_html = QString(
+                 "<br><br><center><font face='%1' "
+                 "size='+6'>🤔</font><br><br></span> The "
+                 "word <b>\"%2\"</b> is not found in the dictionary.</center>")
+                 .arg(m_emojiFont)
+                 .arg(word);
   else
     createResources(m_html);
 
@@ -317,9 +328,9 @@ void MainWindow::createResources(const QString& html)
         case MOBIFiletype::T_GIF:
         case MOBIFiletype::T_PNG:
         case MOBIFiletype::T_BMP: {
-          QImage* img = new QImage;
-          bool success =
-              img->loadFromData(QByteArray((const char*)flow->data, flow->size));
+          QImage* img  = new QImage;
+          bool success = img->loadFromData(
+              QByteArray((const char*)flow->data, flow->size));
           if (!success) {
             qWarning() << "Failed to load image for" << match;
             delete img;
@@ -356,16 +367,20 @@ void MainWindow::showSettingsDialog()
   m_settingsDialog->exec();
 
   // Apply possible new values
-  m_deviceSerial = m_settings->value("viewer/deviceSerial", QString()).toString();
+  m_deviceSerial =
+      m_settings->value("viewer/deviceSerial", QString()).toString();
 
-  QString fontName = m_settings->value("viewer/fontName", "Consolas").toString();
-  int fontSize     = m_settings->value("viewer/fontSize", 18).toInt();
+  QString fontName =
+      m_settings->value("viewer/fontName", "Consolas").toString();
+  int fontSize = m_settings->value("viewer/fontSize", 18).toInt();
 
   if (fontName != m_fontName || fontSize != m_fontSize) {
     m_fontName = fontName;
     m_fontSize = fontSize;
     m_ui->resultBrowser->document()->setDefaultStyleSheet(
-        QString("* {font-size: %1px; font-family:%2 }").arg(m_fontSize).arg(m_fontName));
+        QString("* {font-size: %1px; font-family:%2 }")
+            .arg(m_fontSize)
+            .arg(m_fontName));
 
     // Reload the entry
     m_ui->resultBrowser->setHtml(m_html);
