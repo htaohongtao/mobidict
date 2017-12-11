@@ -71,9 +71,10 @@ MainWindow::MainWindow() : QWidget(), m_ui(new Ui::MainWindow())
           &MainWindow::searchItem);
   connect(m_ui->resultBrowser, &QTextBrowser::anchorClicked, this,
           &MainWindow::openLink);
-  connect(m_ui->dictComboBox, static_cast<void (QComboBox::*)(const QString&)>(
-                                  &QComboBox::activated),
-          this, &MainWindow::loadDictionary);
+  connect(
+      m_ui->dictComboBox,
+      static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::activated),
+      this, &MainWindow::loadDictionary);
   connect(&m_watcher, &QFutureWatcher<bool>::finished, this,
           &MainWindow::dictionaryLoaded);
   connect(m_ui->settingsButton, &QAbstractButton::clicked, this,
