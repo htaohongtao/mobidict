@@ -268,7 +268,10 @@ void MainWindow::loadDictionary(const QString& text)
 void MainWindow::searchWord()
 {
   QString word = m_ui->searchLine->text();
-  m_html       = m_currentDict->lookupWord(word);
+  if (word.isEmpty())
+    return;
+
+  m_html = m_currentDict->lookupWord(word);
 
   if (m_html.isNull())
     m_html = QString(
