@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.9.2)
 
 project(mobidict)
 
+include(CheckIPOSupported)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -10,7 +11,6 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED TRUE)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 
 if (UNIX AND NOT APPLE)
   set(LINUX TRUE)
@@ -78,6 +78,13 @@ endif()
 
 add_executable(mobidict ${OS_BUNDLE} ${SOURCES} ${UI_HEADERS} ${RES_FILES})
 target_link_libraries(mobidict Qt5::Concurrent Qt5::Svg Qt5::Widgets ${TEST_LIB} ${ZLIB_LIBRARIES})
+
+check_ipo_supported(RESULT ipo_supported OUTPUT output)
+if(ipo_supported)
+  set_property(TARGET mobidict PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+else()
+  message(WARNING "IPO is not supported: ${output}")
+endif()
 
 if (LINUX)
     install(TARGETS mobidict RUNTIME DESTINATION bin)
