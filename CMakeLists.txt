@@ -16,6 +16,10 @@ if (UNIX AND NOT APPLE)
   set(LINUX TRUE)
 endif()
 
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=lld")
+endif()
+
 if (LINUX)
   option(ASAN "Enable AddressSanitizer (Linux only)" OFF)
 endif()
