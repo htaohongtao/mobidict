@@ -80,6 +80,7 @@ MainWindow::MainWindow() : QWidget(), m_ui(new Ui::MainWindow())
   connect(m_ui->settingsButton, &QAbstractButton::clicked, this,
           &MainWindow::showSettingsDialog);
 
+  new QShortcut(QKeySequence(Qt::Key_Escape), this, SLOT(clearAndFocus()));
   new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_L), m_ui->searchLine,
                 SLOT(setFocus()));
   new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_M), m_ui->matchesWidget,
@@ -181,6 +182,12 @@ void MainWindow::showEvent(QShowEvent* ev)
   }
 
   QWidget::showEvent(ev);
+}
+
+void MainWindow::clearAndFocus()
+{
+  m_ui->searchLine->clear();
+  m_ui->searchLine->setFocus();
 }
 
 void MainWindow::dictionaryLoaded()
