@@ -30,6 +30,12 @@ install:
 
     vcpkg install zlib:x64-windows-static
 
+    appveyor DownloadFile http://prereleases.llvm.org/win-snapshots/LLVM-6.0.0-r320423-win64.exe -FileName llvm-installer.exe
+
+    START /WAIT llvm-installer.exe /S /D=C:\"Program Files\LLVM"
+
+    clang-cl --version
+
     ninja --version
     
     cmake --version
