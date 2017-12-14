@@ -75,8 +75,8 @@ QString MobiDict::lookupWord(const QString &word)
     result = result.replace("lowrecindex=", "src=");
     result = result.replace("recindex=", "src=");
 
-    // qDebug() << "HTML entry:";
-    // qDebug() << result;
+    // qWarning() << "HTML entry:";
+    // qWarning() << result;
   }
 
   // Force rich-text detection
