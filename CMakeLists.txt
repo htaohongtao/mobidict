@@ -82,6 +82,7 @@ target_link_libraries(mobidict Qt5::Concurrent Qt5::Svg Qt5::Widgets ${TEST_LIB}
 check_ipo_supported(RESULT ipo_supported OUTPUT output)
 if(ipo_supported)
   set_property(TARGET mobidict PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+  message(STATUS "Enabling IPO")
 else()
   message(WARNING "IPO is not supported: ${output}")
 endif()
