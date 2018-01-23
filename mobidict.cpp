@@ -149,6 +149,9 @@ MOBI_RET MobiDict::open()
   if (mobi_ret != MOBI_SUCCESS)
     return mobi_ret;
 
+  if (!m_rawMarkup->orth)
+    return MOBI_FILE_UNSUPPORTED;
+
   uint32_t entry_startpos = 0;
   uint32_t entry_textlen  = 0;
 
