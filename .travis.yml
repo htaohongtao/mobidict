@@ -13,7 +13,7 @@ deploy:
   provider: pages
   skip_cleanup: true
   github_token: "$GITHUB_TOKEN"
-  local_dir: dist
+  local_dir: build/dist
   on:
     branch: master
     condition: "($CC = clang) && ($TRAVIS_OS_NAME = osx)"
