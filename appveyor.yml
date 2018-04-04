@@ -2,6 +2,10 @@ version: '1.1-beta{build}'
 
 image: Visual Studio 2017
 
+artifacts:
+- path: 'build/*.exe'
+  name: Mobidict
+
 build:
      verbosity: detailed
 
