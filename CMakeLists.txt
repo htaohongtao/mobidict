@@ -107,7 +107,9 @@ elseif (APPLE OR WIN32)
   get_property(QT_JPEG_PLUGIN TARGET Qt5::QJpegPlugin PROPERTY LOCATION_RELEASE)
   get_property(QT_SVG_PLUGIN TARGET Qt5::QSvgPlugin PROPERTY LOCATION_RELEASE)
 
-  if (WIN32)
+  if (APPLE)
+      get_property(QT_UI_PLUGIN TARGET Qt5::QMacStylePlugin PROPERTY LOCATION_RELEASE)
+  elsif (WIN32)
       get_property(QT_UI_PLUGIN TARGET Qt5::QWindowsVistaStylePlugin PROPERTY LOCATION_RELEASE)
   endif()
 
@@ -115,11 +117,7 @@ elseif (APPLE OR WIN32)
           RUNTIME DESTINATION .
           BUNDLE DESTINATION  . )
 
-  if (APPLE)
-    install_qt5_executable(${BUNDLE_NAME} "${QT_GIF_PLUGIN};${QT_JPEG_PLUGIN};${QT_SVG_PLUGIN}" "" "" "plugins" TRUE)
-  elseif (WIN32)
-    install_qt5_executable(${BUNDLE_NAME} "${QT_GIF_PLUGIN};${QT_JPEG_PLUGIN};${QT_SVG_PLUGIN};${QT_UI_PLUGIN}" "" "" "plugins" TRUE)
-  endif()
+  install_qt5_executable(${BUNDLE_NAME} "${QT_GIF_PLUGIN};${QT_JPEG_PLUGIN};${QT_SVG_PLUGIN};${QT_UI_PLUGIN}" "" "" "plugins" TRUE)
 
   set(CPACK_PACKAGE_VENDOR "i10z")
   set(CPACK_PACKAGE_VERSION "1.1")
