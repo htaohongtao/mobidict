@@ -109,7 +109,7 @@ elseif (APPLE OR WIN32)
 
   if (APPLE)
       get_property(QT_UI_PLUGIN TARGET Qt5::QMacStylePlugin PROPERTY LOCATION_RELEASE)
-  elsif (WIN32)
+  elseif (WIN32)
       get_property(QT_UI_PLUGIN TARGET Qt5::QWindowsVistaStylePlugin PROPERTY LOCATION_RELEASE)
   endif()
 
