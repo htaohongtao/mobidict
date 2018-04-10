@@ -20,6 +20,12 @@ on_finish:
 
 install:
 - cmd: >-
+    cd c:\tools\vcpkg
+
+    git pull
+
+    vcpkg upgrade
+
     mkdir C:\projects\deps
 
     cd C:\projects\deps
@@ -31,8 +37,6 @@ install:
     7z x ninja.zip -oC:\projects\deps\ninja > nul
 
     set PATH=C:\projects\deps\ninja;%PATH%
-
-    vcpkg upgrade
 
     vcpkg install zlib:x64-windows-static
 
