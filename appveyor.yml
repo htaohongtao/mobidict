@@ -24,6 +24,8 @@ install:
 
     git pull
 
+    .\bootstrap-vcpkg.bat
+
     vcpkg upgrade
 
     mkdir C:\projects\deps
