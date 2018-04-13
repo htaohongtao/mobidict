@@ -166,18 +166,8 @@ MOBI_RET MobiDict::open()
     entry_startpos = mobi_get_orth_entry_start_offset(orth_entry);
     entry_textlen  = mobi_get_orth_entry_text_length(orth_entry);
 
-    // So textlengths are not set then maybe we can find entries divided by <hr .*/> tags
-    // Yes, this is a gross hack.
-    if (entry_textlen == 0) {
-      for (int j = 0; j < BROKEN_ENTRY_SEARCH_LENGTH; ++j) {
-        if (!strncmp(reinterpret_cast<const char *>(m_rawMarkup->flow->data +
-                                                    entry_startpos + j),
-                     "<hr ", 4)) {
-          entry_textlen = j - 1;
-          break;
-        }
-      }
-    }
+    if (entry_textlen == 0)
+        entry_textlen = BROKEN_ENTRY_SEARCH_LENGTH;
 
     if (entry_startpos == 0 || entry_textlen == 0) {
       ++i;
@@ -205,8 +195,10 @@ MOBI_RET MobiDict::open()
     // qDebug("Adding %s", orth_entry->label);
   }
 
-  if (m_wordMap.isEmpty())
+  if (m_wordMap.isEmpty()) {
+    qWarning() << "Failed to find any word.";
     return MOBI_DATA_CORRUPT;
+  }
 
 #ifndef NDEBUG
   qDebug() << "Dictionary loaded in" << timer.elapsed() << "miliseconds";
