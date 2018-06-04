@@ -5,8 +5,6 @@
 
 #include "mobidict.h"
 
-#define BROKEN_ENTRY_SEARCH_LENGTH 8192
-
 MobiDict::MobiDict(const QString &path, const QString &serial) : QObject()
 {
   m_mobiData     = nullptr;
@@ -165,9 +163,6 @@ MOBI_RET MobiDict::open()
     const MOBIIndexEntry *orth_entry = &m_rawMarkup->orth->entries[i];
     entry_startpos = mobi_get_orth_entry_start_offset(orth_entry);
     entry_textlen  = mobi_get_orth_entry_text_length(orth_entry);
-
-    if (entry_textlen == 0)
-        entry_textlen = BROKEN_ENTRY_SEARCH_LENGTH;
 
     if (entry_startpos == 0 || entry_textlen == 0) {
       ++i;
