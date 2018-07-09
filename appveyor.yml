@@ -1,4 +1,4 @@
-version: '1.2.r{build}'
+version: '1.3.r{build}'
 
 image: Visual Studio 2017
 
@@ -40,7 +40,7 @@ install:
 
     vcpkg install zlib:x64-windows-static
 
-    appveyor DownloadFile http://releases.llvm.org/6.0.0/LLVM-6.0.0-win64.exe -FileName llvm-installer.exe
+    appveyor DownloadFile http://releases.llvm.org/6.0.1/LLVM-6.0.1-win64.exe -FileName llvm-installer.exe
 
     START /WAIT llvm-installer.exe /S /D=C:\"Program Files\LLVM"
 
