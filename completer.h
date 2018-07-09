@@ -10,12 +10,10 @@ class Completer : public QObject {
   ~Completer();
 
   void setWordList(const QList<QString>&);
-  void setCompletionPrefix(const QString&);
-  const QList<QString>& matches();
+  QList<QString> matches(const QString&);
 
  private:
   QList<QString> m_wordList;
-  QList<QString> m_matches;
 };
 
 #endif

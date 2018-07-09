@@ -307,12 +307,8 @@ void MainWindow::searchItem(QListWidgetItem* item)
 
 void MainWindow::loadMatches(const QString& word)
 {
-  if (!m_completer)
-    return;
-
-  m_completer->setCompletionPrefix(word);
   m_ui->matchesWidget->clear();
-  m_ui->matchesWidget->addItems(m_completer->matches());
+  m_ui->matchesWidget->addItems(m_completer->matches(word));
 }
 
 void MainWindow::createResources(const QString& html)
