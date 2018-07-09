@@ -28,7 +28,7 @@ void Completer::setCompletionPrefix(const QString& prefix)
   m_matches.clear();
   QString upper = prefix.toUpper();
 
-  for (auto word : m_wordList)
+  for (const auto& word : m_wordList)
     if (word.toUpper().startsWith(upper))
       m_matches.append(word);
 }
