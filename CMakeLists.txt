@@ -82,9 +82,9 @@ target_link_libraries(mobidict Qt5::Concurrent Qt5::Svg Qt5::Widgets ${TEST_LIB}
 check_ipo_supported(RESULT ipo_supported OUTPUT output)
 if(ipo_supported AND NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set_property(TARGET mobidict PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
-  message(STATUS "Enabling IPO")
+  message(STATUS "Enabling Interprocedural optimization")
 else()
-  message(WARNING "IPO is not supported: ${output}")
+    message(STATUS "Interprocedural optimization is not supported with ${CMAKE_CXX_COMPILER_ID}")
 endif()
 
 if (LINUX)
