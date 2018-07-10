@@ -41,7 +41,7 @@
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Device Serial Number</string>
+        <string>Device Serial#</string>
        </property>
       </widget>
      </item>
@@ -68,7 +68,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Point size</string>
+        <string>Font point size</string>
        </property>
       </widget>
      </item>
