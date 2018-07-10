@@ -8,6 +8,9 @@ void Completer::setWordList(const QList<QString>& wordList)
 
 QList<QString> Completer::matches(const QString& prefix)
 {
-  return m_wordList.filter(
-      QRegularExpression(prefix, QRegularExpression::CaseInsensitiveOption));
+  QRegularExpression regex(prefix, QRegularExpression::CaseInsensitiveOption);
+  if (!regex.isValid())
+    return QList<QString>();
+
+  return m_wordList.filter(regex);
 }
