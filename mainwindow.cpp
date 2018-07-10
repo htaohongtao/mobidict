@@ -31,6 +31,11 @@ MainWindow::MainWindow() : QWidget(), m_ui(new Ui::MainWindow())
   m_deviceSerial    = QString::null;
   m_html            = QString::null;
 
+  m_model = new QStringListModel;
+  m_ui->matchesView->setModel(m_model);
+  m_ui->matchesView->setUniformItemSizes(true);
+  m_ui->matchesView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
 #ifdef AUTOTEST
   m_stopTesting = false;
 
@@ -61,14 +66,15 @@ MainWindow::MainWindow() : QWidget(), m_ui(new Ui::MainWindow())
           &MainWindow::searchWord);
   connect(m_ui->searchLine, &QLineEdit::textChanged, this,
           &MainWindow::loadMatches);
-  connect(m_ui->matchesWidget, &QListWidget::itemActivated, this,
+  connect(m_ui->matchesView, &QListView::activated, this,
           &MainWindow::searchItem);
-  connect(m_ui->matchesWidget, &QListWidget::itemClicked, this,
+  connect(m_ui->matchesView, &QListView::clicked, this,
           &MainWindow::searchItem);
-  connect(m_ui->matchesWidget, &QListWidget::itemDoubleClicked, this,
+  connect(m_ui->matchesView, &QListView::doubleClicked, this,
           &MainWindow::copyWordToClipboard);
-  connect(m_ui->matchesWidget, &QListWidget::currentItemChanged, this,
-          &MainWindow::searchItem);
+  connect(m_ui->matchesView->selectionModel(),
+          &QItemSelectionModel::selectionChanged, this,
+          &MainWindow::handleSelectionChanged);
   connect(m_ui->resultBrowser, &QTextBrowser::anchorClicked, this,
           &MainWindow::openLink);
   connect(
@@ -83,11 +89,11 @@ MainWindow::MainWindow() : QWidget(), m_ui(new Ui::MainWindow())
   new QShortcut(QKeySequence(Qt::Key_Escape), this, SLOT(clearAndFocus()));
   new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_L), m_ui->searchLine,
                 SLOT(setFocus()));
-  new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_M), m_ui->matchesWidget,
+  new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_M), m_ui->matchesView,
                 SLOT(setFocus()));
 
 #ifdef Q_OS_OSX
-  m_ui->matchesWidget->setAttribute(Qt::WA_MacShowFocusRect, 0);
+  m_ui->matchesView->setAttribute(Qt::WA_MacShowFocusRect, 0);
 #endif
 }
 
@@ -102,6 +108,9 @@ MainWindow::~MainWindow()
   delete m_completer;
   m_completer = nullptr;
 
+  delete m_model;
+  m_model = nullptr;
+
   delete m_settings;
   m_settings = nullptr;
 
@@ -115,8 +124,9 @@ bool MainWindow::eventFilter(QObject* obj, QEvent* event)
     const QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
     if (obj == m_ui->searchLine) {
       if (keyEvent->key() == Qt::Key_Down) {
-        m_ui->matchesWidget->setFocus();
-        m_ui->matchesWidget->setCurrentItem(m_ui->matchesWidget->item(0));
+        m_ui->matchesView->setFocus();
+        m_ui->matchesView->setCurrentIndex(
+            m_ui->matchesView->model()->index(0, 0));
       }
     }
 
@@ -214,7 +224,7 @@ void MainWindow::dictionaryLoaded()
     loadMatches(QString::null);
 
     // and select the first item
-    m_ui->matchesWidget->setCurrentItem(m_ui->matchesWidget->item(0));
+    m_ui->matchesView->setCurrentIndex(m_ui->matchesView->model()->index(0, 0));
 
 #ifdef SELF_TEST
     selfTest();
@@ -264,7 +274,6 @@ void MainWindow::loadDictionary(const QString& text)
   m_future = QtConcurrent::run(m_currentDict, &MobiDict::open);
   m_watcher.setFuture(m_future);
 
-  m_ui->matchesWidget->clear();
   m_ui->searchLine->setEnabled(false);
   m_ui->dictComboBox->setEnabled(false);
   m_ui->dictComboBox->setCurrentText(text);
@@ -294,12 +303,14 @@ void MainWindow::searchWord()
   m_ui->resultBrowser->setHtml(m_html);
 }
 
-void MainWindow::searchItem(QListWidgetItem* item)
+void MainWindow::handleSelectionChanged(const QItemSelection& selection)
 {
-  if (!item)
-    return;
+  searchItem(selection.indexes().first());
+}
 
-  m_html = m_currentDict->lookupWord(item->text());
+void MainWindow::searchItem(const QModelIndex& index)
+{
+  m_html = m_currentDict->lookupWord(index.data().toString());
   createResources(m_html);
 
   m_ui->resultBrowser->setHtml(m_html);
@@ -307,8 +318,7 @@ void MainWindow::searchItem(QListWidgetItem* item)
 
 void MainWindow::loadMatches(const QString& word)
 {
-  m_ui->matchesWidget->clear();
-  m_ui->matchesWidget->addItems(m_completer->matches(word));
+  m_model->setStringList(m_completer->matches(word));
 }
 
 void MainWindow::createResources(const QString& html)
@@ -394,9 +404,9 @@ void MainWindow::showSettingsDialog()
   }
 }
 
-void MainWindow::copyWordToClipboard(QListWidgetItem* item)
+void MainWindow::copyWordToClipboard(const QModelIndex& index)
 {
-  QApplication::clipboard()->setText(item->text());
+  QApplication::clipboard()->setText(index.data().toString());
 }
 
 #ifdef AUTOTEST
@@ -405,16 +415,11 @@ void MainWindow::selfTest()
   m_stopTesting = false;
 
   QApplication::processEvents();
-  for (int i = 0; i < m_ui->matchesWidget->count(); ++i) {
+  for (int i = 0; i < m_ui->matchesView->model()->rowCount(); ++i) {
     if (m_stopTesting)
       break;
 
-    QListWidgetItem* item = m_ui->matchesWidget->item(i);
-    QPoint center         = m_ui->matchesWidget->visualItemRect(item).center();
-    QWidget* viewPort     = m_ui->matchesWidget->viewport();
-    m_ui->matchesWidget->setCurrentItem(item);
-
-    QTest::mouseClick(viewPort, Qt::LeftButton, Qt::NoModifier, center, 0);
+    m_ui->matchesView->setCurrentIndex(m_ui->matchesView->model()->index(i, 0));
     QApplication::processEvents();
   }
 }

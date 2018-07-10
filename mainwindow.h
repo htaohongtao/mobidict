@@ -3,6 +3,7 @@
 
 #include <QFutureWatcher>
 #include <QSettings>
+#include <QStringListModel>
 #include <QWidget>
 
 #include "mobidict.h"
@@ -20,7 +21,7 @@ class MainWindow : public QWidget {
 
   bool discoverDictionaries();
   void loadMatches(const QString&);
-  void searchItem(QListWidgetItem*);
+  void searchItem(const QModelIndex&);
   void searchWord();
 
  public slots:
@@ -28,8 +29,9 @@ class MainWindow : public QWidget {
   void loadDictionary(const QString&);
   void openLink(const QUrl& link);
   void showSettingsDialog();
-  void copyWordToClipboard(QListWidgetItem*);
+  void copyWordToClipboard(const QModelIndex&);
   void clearAndFocus();
+  void handleSelectionChanged(const QItemSelection&);
 
  protected:
   bool eventFilter(QObject* obj, QEvent* ev) override;
@@ -47,6 +49,7 @@ class MainWindow : public QWidget {
   QString m_html;
   QString m_fontName;
   int m_fontSize;
+  QStringListModel* m_model;
 
   QFutureWatcher<MOBI_RET> m_watcher;
   QFuture<MOBI_RET> m_future;

@@ -85,7 +85,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QListWidget" name="matchesWidget">
+        <widget class="QListView" name="matchesView">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -124,7 +124,7 @@
  <tabstops>
   <tabstop>dictComboBox</tabstop>
   <tabstop>searchLine</tabstop>
-  <tabstop>matchesWidget</tabstop>
+  <tabstop>matchesView</tabstop>
   <tabstop>resultBrowser</tabstop>
  </tabstops>
  <resources>
