@@ -1,3 +1,4 @@
+#include <QCollator>
 #include <QDebug>
 #include <QElapsedTimer>
 #include <QSysInfo>
@@ -21,8 +22,8 @@ MobiDict::~MobiDict()
   mobi_free(m_mobiData);
   mobi_free_rawml(m_rawMarkup);
 
-  for (const auto &key : m_wordMap.keys())
-    qDeleteAll(m_wordMap[key]);
+  for (const auto &key : m_wordHash.keys())
+    qDeleteAll(m_wordHash[key]);
 }
 
 QString MobiDict::resolveLink(const QString &link)
@@ -30,8 +31,8 @@ QString MobiDict::resolveLink(const QString &link)
   const uint32_t offset = link.toUInt();
   QString match         = QString::null;
 
-  for (const auto &entry : m_wordMap.keys()) {
-    for (const auto &mobiEntry : m_wordMap[entry]) {
+  for (const auto &entry : m_wordHash.keys()) {
+    for (const auto &mobiEntry : m_wordHash[entry]) {
       if (mobiEntry->startPos == offset) {
         match = entry;
         break;
@@ -44,7 +45,7 @@ QString MobiDict::resolveLink(const QString &link)
 
 QString MobiDict::lookupWord(const QString &word)
 {
-  if (m_wordMap.constFind(word) == m_wordMap.constEnd())
+  if (m_wordHash.constFind(word) == m_wordHash.constEnd())
     return QString::null;
 
   QString result;
@@ -53,7 +54,7 @@ QString MobiDict::lookupWord(const QString &word)
   uint32_t entry_startpos = 0;
   uint32_t entry_textlen  = 0;
 
-  for (const auto &mobiEntry : m_wordMap[word]) {
+  for (const auto &mobiEntry : m_wordHash[word]) {
     MobiEntry *m   = mobiEntry;
     entry_startpos = m->startPos;
     entry_textlen  = m->textLength;
@@ -154,6 +155,7 @@ MOBI_RET MobiDict::open()
   uint32_t entry_textlen  = 0;
 
   const size_t count = m_rawMarkup->orth->total_entries_count;
+  m_language         = mobi_meta_get_language(m_mobiData);
 
 #ifndef NDEBUG
   QStringList multiples;
@@ -177,7 +179,7 @@ MOBI_RET MobiDict::open()
       label = QString::fromUtf8(orth_entry->label);
 
 #ifndef NDEBUG
-    if (m_wordMap.constFind(label) != m_wordMap.constEnd())
+    if (m_wordHash.constFind(label) != m_wordHash.constEnd())
       multiples << label;
 #endif
 
@@ -185,12 +187,12 @@ MOBI_RET MobiDict::open()
     mobiEntry->startPos   = entry_startpos;
     mobiEntry->textLength = entry_textlen;
 
-    m_wordMap[label].append(mobiEntry);
+    m_wordHash[label].append(mobiEntry);
 
     // qDebug("Adding %s", orth_entry->label);
   }
 
-  if (m_wordMap.isEmpty()) {
+  if (m_wordHash.isEmpty()) {
     qWarning() << "Failed to find any word.";
     return MOBI_DATA_CORRUPT;
   }
@@ -211,7 +213,18 @@ const QString &MobiDict::title()
 
 const QList<QString> MobiDict::words()
 {
-  return m_wordMap.keys();
+  QList<QString> keys = m_wordHash.keys();
+  QCollator sorter;
+
+  sorter.setLocale(QLocale(m_language));
+  sorter.setIgnorePunctuation(true);
+  sorter.setNumericMode(true);
+  sorter.setCaseSensitivity(Qt::CaseInsensitive);
+  std::sort(keys.begin(), keys.end(), [&](const QString &a, const QString &b) {
+    return sorter.compare(a, b) < 0;
+  });
+
+  return keys;
 }
 
 MOBIPart *MobiDict::getResourceByUid(const size_t &uid)

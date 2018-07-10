@@ -1,7 +1,7 @@
 #ifndef MOBIDICT_H
 #define MOBIDICT_H
 
-#include <QMap>
+#include <QHash>
 #include <QObject>
 #include <QString>
 #include <QTextCodec>
@@ -32,12 +32,13 @@ class MobiDict : public QObject {
   MOBIRawml* m_rawMarkup;
 
   QString m_deviceSerial;
+  QString m_language;
   QString m_path;
   QString m_title;
 
   bool m_isCP1252;
 
-  QMap<QString, QList<MobiEntry*>> m_wordMap;
+  QHash<QString, QList<MobiEntry*>> m_wordHash;
   QTextCodec* m_codec;
 };
 
