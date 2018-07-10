@@ -132,9 +132,13 @@ MOBI_RET MobiDict::open()
   if (m_isCP1252)
     m_codec = QTextCodec::codecForName("cp1252");
 
-  char *title = mobi_meta_get_title(m_mobiData);
-  m_title     = QString::fromUtf8(title);
+  char *title    = mobi_meta_get_title(m_mobiData);
+  m_title        = QString::fromUtf8(title);
+  char *language = mobi_meta_get_language(m_mobiData);
+  m_language     = QString::fromLatin1(language);
+
   free(title);
+  free(language);
 
   m_rawMarkup = mobi_init_rawml(m_mobiData);
   if (m_rawMarkup == nullptr)
@@ -155,7 +159,6 @@ MOBI_RET MobiDict::open()
   uint32_t entry_textlen  = 0;
 
   const size_t count = m_rawMarkup->orth->total_entries_count;
-  m_language         = mobi_meta_get_language(m_mobiData);
 
 #ifndef NDEBUG
   QStringList multiples;
