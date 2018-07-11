@@ -8,13 +8,14 @@
 
 MobiDict::MobiDict(const QString &path, const QString &serial) : QObject()
 {
+  m_codec        = nullptr;
+  m_deviceSerial = serial;
+  m_isCP1252     = false;
+  m_language     = QString::null;
   m_mobiData     = nullptr;
   m_rawMarkup    = nullptr;
   m_path         = path;
   m_title        = QString::null;
-  m_codec        = nullptr;
-  m_deviceSerial = serial;
-  m_isCP1252     = false;
 }
 
 MobiDict::~MobiDict()
