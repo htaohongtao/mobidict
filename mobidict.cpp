@@ -1,8 +1,6 @@
 #include <QCollator>
 #include <QDebug>
 #include <QElapsedTimer>
-#include <QSysInfo>
-#include <QtGlobal>
 
 #include "mobidict.h"
 
