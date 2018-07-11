@@ -13,9 +13,8 @@ Settings::Settings(QWidget* parent, QSettings* settings)
     m_ui->pointComboBox->addItem(QString::number(point));
 
   m_ui->serialNumber->setToolTip(
-      "For <b>your own</b> dictionaries with DRM, enter your reader device's "
-      "serial "
-      "number here");
+      "For <b>your own</b> dictionaries with DRM, enter your e-reader's serial "
+      "number here.");
   connect(this, &QDialog::accepted, this, &Settings::saveSettings);
 }
 
