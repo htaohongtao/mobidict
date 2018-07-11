@@ -49,17 +49,18 @@ QString MobiDict::lookupWord(const QString &word)
   if (m_wordHash.constFind(word) == m_wordHash.constEnd())
     return QString::null;
 
-  QString result;
-  std::string html;
+  // Force rich-text detection
+  QString result = "<qt>";
 
   uint32_t entry_startpos = 0;
   uint32_t entry_textlen  = 0;
 
   for (const auto &mobiEntry : m_wordHash[word]) {
-    MobiEntry *m   = mobiEntry;
-    entry_startpos = m->startPos;
-    entry_textlen  = m->textLength;
+    const MobiEntry *const m = mobiEntry;
+    entry_startpos           = m->startPos;
+    entry_textlen            = m->textLength;
 
+    std::string html;
     html.assign(m_rawMarkup->flow->data + entry_startpos,
                 m_rawMarkup->flow->data + entry_startpos + entry_textlen);
 
@@ -78,9 +79,6 @@ QString MobiDict::lookupWord(const QString &word)
     // qWarning() << "HTML entry:";
     // qWarning() << result;
   }
-
-  // Force rich-text detection
-  result.prepend("<qt>");
 
   return result;
 }
