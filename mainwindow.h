@@ -9,7 +9,6 @@
 #include "mobidict.h"
 #include "ui_mainwindow.h"
 
-class Completer;
 class Settings;
 
 class MainWindow : public QWidget {
@@ -43,7 +42,6 @@ class MainWindow : public QWidget {
 
   MobiDict* m_currentDict;
   QString m_currentDictName;
-  Completer* m_completer;
   QString m_deviceSerial;
   QString m_emojiFont;
   QString m_html;

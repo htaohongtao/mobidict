@@ -15,7 +15,6 @@
 #define SELF_TEST
 #endif
 
-#include "completer.h"
 #include "mainwindow.h"
 #include "settings.h"
 
@@ -25,7 +24,6 @@ MainWindow::MainWindow() : QWidget(), m_ui(new Ui::MainWindow())
   m_ui->splitter->setStretchFactor(0, 2);
   m_ui->splitter->setStretchFactor(1, 8);
 
-  m_completer       = new Completer;
   m_currentDict     = nullptr;
   m_currentDictName = QString::null;
   m_deviceSerial    = QString::null;
@@ -104,9 +102,6 @@ MainWindow::~MainWindow()
 
   delete m_currentDict;
   m_currentDict = nullptr;
-
-  delete m_completer;
-  m_completer = nullptr;
 
   delete m_model;
   m_model = nullptr;
@@ -215,8 +210,6 @@ void MainWindow::dictionaryLoaded()
     m_currentDictName = QString::null;
   }
   else {
-    m_completer->setWordList(m_currentDict->words());
-
     setWindowTitle(m_currentDict->title());
     m_ui->searchLine->setEnabled(true);
 
@@ -318,7 +311,13 @@ void MainWindow::searchItem(const QModelIndex& index)
 
 void MainWindow::loadMatches(const QString& word)
 {
-  m_model->setStringList(m_completer->matches(word));
+  QRegularExpression regex(word, QRegularExpression::CaseInsensitiveOption);
+  QList<QString> matches;
+
+  if (regex.isValid())
+    matches = m_currentDict->words().filter(regex);
+
+  m_model->setStringList(matches);
 }
 
 void MainWindow::createResources(const QString& html)

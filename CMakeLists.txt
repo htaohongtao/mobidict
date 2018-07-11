@@ -34,7 +34,7 @@ set(LIBMOBI_SRCS libmobi/src/buffer.c libmobi/src/compression.c
                  libmobi/src/read.c libmobi/src/structure.c libmobi/tools/common.c
                  libmobi/src/util.c)
 
-set(SOURCES completer.cpp htmlbrowser.cpp main.cpp mainwindow.cpp settings.cpp
+set(SOURCES htmlbrowser.cpp main.cpp mainwindow.cpp settings.cpp
             mobidict.cpp resources.qrc ${LIBMOBI_SRCS})
 
 qt5_wrap_ui(UI_HEADERS mainwindow.ui settings.ui)
