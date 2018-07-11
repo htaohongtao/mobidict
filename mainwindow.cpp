@@ -161,7 +161,7 @@ void MainWindow::showEvent(QShowEvent* ev)
         m_settings->value("viewer/deviceSerial", QString()).toString();
 
     if (!deviceSerial.isEmpty()) {
-      // qWarning() << "Device serial number:" << deviceSerial;
+      qDebug() << "Device serial number:" << deviceSerial;
       m_deviceSerial = deviceSerial;
     }
 
