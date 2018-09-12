@@ -79,13 +79,15 @@ endif()
 add_executable(mobidict ${OS_BUNDLE} ${SOURCES} ${UI_HEADERS} ${RES_FILES})
 target_link_libraries(mobidict Qt5::Concurrent Qt5::Svg Qt5::Widgets ${TEST_LIB} ${ZLIB_LIBRARIES})
 
-check_ipo_supported(RESULT ipo_supported OUTPUT output)
-if(ipo_supported AND NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  set_property(TARGET mobidict PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
-  message(STATUS "Enabling Interprocedural optimization")
-else()
-    message(STATUS "Interprocedural optimization is not supported with ${CMAKE_CXX_COMPILER_ID}")
-endif()
+# Disabled until fix https://gitlab.kitware.com/cmake/cmake/commit/4e1ea02bb86f40d8ba0c247869a508b1da2c84b1
+# is available
+#check_ipo_supported(RESULT ipo_supported OUTPUT output)
+#if(ipo_supported AND NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+#  set_property(TARGET mobidict PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+#  message(STATUS "Enabling Interprocedural optimization")
+#else()
+#    message(STATUS "Interprocedural optimization is not supported with ${CMAKE_CXX_COMPILER_ID}")
+#endif()
 
 if (LINUX)
     install(TARGETS mobidict RUNTIME DESTINATION bin)
